@@ -8,6 +8,9 @@ port="${TEST_PORT:-18116}"
 data_dir="$(mktemp -d /tmp/dosbox-wasm-data.XXXXXX)"
 log_file="$(mktemp /tmp/dosbox-wasm-server.XXXXXX.log)"
 
+node "$repo_dir/scripts/test-adapter.js" "$site_dir"
+node "$framework_dir/scripts/check-game-package.js" "$site_dir"
+
 cleanup() {
   [[ -n "${server_pid:-}" ]] && kill "$server_pid" 2>/dev/null || true
   find "$data_dir" -mindepth 1 -delete 2>/dev/null || true

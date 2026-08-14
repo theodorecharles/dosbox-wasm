@@ -10,6 +10,7 @@ WASM_FRAMEWORK_DIR="$framework_dir" \
 
 node --check "$repo_dir/web/dist/dosbox.js"
 node --check "$repo_dir/web/dist/game-adapter.js"
+node "$repo_dir/scripts/test-adapter.js" "$repo_dir/web/dist"
 wasm-validate "$repo_dir/web/dist/dosbox.wasm"
 jq -e '.variants | keys == ["jill1", "jill2", "jill3"]' "$repo_dir/web/dist/wasm-game.json" >/dev/null
 jq -e '[.variants[].files | length] == [28, 27, 34]' "$repo_dir/web/dist/wasm-game-data.json" >/dev/null
@@ -35,4 +36,3 @@ rg -q 'createDosBoxModule' "$repo_dir/web/dist/dosbox.js"
 WASM_FRAMEWORK_DIR="$framework_dir" "$repo_dir/scripts/test-static.sh"
 git -C "$repo_dir" diff --check
 printf 'DOSBox native build, framework contract, WASD seam, and retail-data boundary checks passed.\n'
-

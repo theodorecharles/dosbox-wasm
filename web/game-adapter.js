@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const runtime = { module: null, manifest: null, started: false };
+  const runtime = { module: null, manifest: null, started: false, state: 'launcher' };
 
   async function sha256Hex(file) {
     const digest = await crypto.subtle.digest('SHA-256', await file.arrayBuffer());
@@ -61,6 +61,7 @@
       printErr: (...args) => context.log(`[DOSBox] ${args.join(' ')}`),
       setStatus: message => { if (message) context.setLoading(String(message)); },
       onAbort: reason => {
+        runtime.state = 'crashed';
         context.log(`DOSBox stopped: ${reason}`);
         context.showRuntime('crashed');
       }
@@ -86,36 +87,48 @@
     async start(context) {
       if (runtime.started) return;
       runtime.started = true;
-      await context.shell.resumeAudio();
-      context.setLoading('Preparing Jill of the Jungle…', '', 5);
-      const prepared = await context.dataClient.load(ownerData(context), {
-        onProgress: detail => progress(context, detail)
-      });
-      context.setLoading('Loading native DOSBox engine…', '', 55);
-      const module = await loadEngine(context);
-      context.setLoading('Preparing Jill of the Jungle…', '', 72);
-      await context.framework.mountOwnerFiles(module, prepared, {
-        root: '/game',
-        mode: 'memfs',
-        onProgress(detail) {
-          if (detail.phase === 'mounting' && detail.total) {
-            context.setLoading('Preparing Jill of the Jungle…', `${Math.floor(detail.copied * 100 / detail.total)}%`,
-              72 + detail.copied * 20 / detail.total);
+      runtime.state = 'loading';
+      context.setEngineState('loading');
+      try {
+        await context.shell.resumeAudio();
+        context.setLoading('Preparing Jill of the Jungle…', '', 5);
+        const prepared = await context.dataClient.load(ownerData(context), {
+          onProgress: detail => progress(context, detail)
+        });
+        context.setLoading('Loading native DOSBox engine…', '', 55);
+        const module = await loadEngine(context);
+        context.setLoading('Preparing Jill of the Jungle…', '', 72);
+        await context.framework.mountOwnerFiles(module, prepared, {
+          root: '/game',
+          mode: 'memfs',
+          onProgress(detail) {
+            if (detail.phase === 'mounting' && detail.total) {
+              context.setLoading('Preparing Jill of the Jungle…', `${Math.floor(detail.copied * 100 / detail.total)}%`,
+                72 + detail.copied * 20 / detail.total);
+            }
           }
+        });
+        module.FS.chdir('/game');
+        context.setLoading('Starting Jill of the Jungle…', runtime.manifest.executable, 98);
+        try {
+          module.callMain([
+            '-c', 'mount c /game',
+            '-c', 'c:',
+            '-c', runtime.manifest.executable
+          ]);
+        } catch (error) {
+          if (error !== 'unwind') throw error;
         }
-      });
-      module.FS.chdir('/game');
-      context.setLoading('Starting Jill of the Jungle…', runtime.manifest.executable, 98);
-      module.callMain([
-        '-c', 'mount c /game',
-        '-c', 'c:',
-        '-c', runtime.manifest.executable
-      ]);
-      context.showRuntime('gameplay');
-      context.setEngineState('gameplay');
-      context.elements.canvas.focus();
+        runtime.state = 'gameplay';
+        context.showRuntime('gameplay');
+        context.elements.canvas.focus();
+      } catch (error) {
+        runtime.started = false;
+        if (runtime.state !== 'crashed') runtime.state = 'launcher';
+        throw error;
+      }
     },
 
-    readEngineState() { return runtime.started ? 'gameplay' : 'menu'; }
+    readEngineState() { return runtime.state; }
   });
 })();

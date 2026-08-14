@@ -8,8 +8,8 @@ dist_dir="$repo_dir/web/dist"
 emsdk_dir="${EMSDK_DIR:-/home/ted/emsdk}"
 framework_dir="${WASM_FRAMEWORK_DIR:-$repo_dir/../wasm-game-framework}"
 jobs="${JOBS:-$(getconf _NPROCESSORS_ONLN 2>/dev/null || printf '8')}"
-required_framework_version="0.7.2"
-required_framework_commit="e4b78d6"
+required_framework_version="0.7.3"
+required_framework_commit="be0b813"
 
 if [[ ! -f "$emsdk_dir/emsdk_env.sh" ]]; then
   printf 'Emscripten SDK environment not found at %s\n' "$emsdk_dir" >&2
@@ -66,6 +66,7 @@ cp "$repo_dir/web/assets/dosbox.ico" "$dist_dir/assets/dosbox.ico"
 cp "$repo_dir/web/assets/dosbox-192.png" "$dist_dir/assets/dosbox-192.png"
 cp "$repo_dir/web/assets/dosbox-512.png" "$dist_dir/assets/dosbox-512.png"
 "$framework_dir/scripts/install-browser-package.sh" "$dist_dir/shared-shell" copy
+node "$framework_dir/scripts/check-game-package.js" "$dist_dir"
 
 node --check "$dist_dir/dosbox.js"
 node --check "$dist_dir/game-adapter.js"

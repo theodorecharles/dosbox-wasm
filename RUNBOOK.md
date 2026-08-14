@@ -8,8 +8,8 @@ nonblocking SDL compatibility seams, surface rendering, and default WASD input.
 Do not submit any change from this repository upstream.
 
 No Jill game file may enter Git, `web/dist`, or a Docker image. The committed
-manifest contains validation metadata only. Regenerate it only from an
-authorized local copy with `JILL_DATA_ROOT=/path/to/DOS npm run manifest:data`,
+manifest contains validation metadata only. Regenerate it only from a
+configured local copy with `JILL_DATA_ROOT=/path/to/DOS npm run manifest:data`,
 then inspect every path and hash before committing it.
 
 ## Build loop
@@ -19,7 +19,7 @@ may contain documentation commits after the immutable runtime release:
 
 ```bash
 EMSDK_DIR=/home/ted/emsdk \
-WASM_FRAMEWORK_DIR=/tmp/wasm-game-framework-v0.7.2 \
+WASM_FRAMEWORK_DIR=/tmp/wasm-game-framework-v0.7.3 \
 ./scripts/test-web.sh
 ```
 
