@@ -32,7 +32,7 @@
         size: spec.size,
         mountName: spec.name,
         async validate(file) {
-          context.setLoading(`Verifying ${spec.name}…`);
+          context.setLoading('Preparing Jill of the Jungle…');
           if (await sha256Hex(file) !== spec.sha256) throw new Error(`${spec.name} failed SHA-256 verification.`);
         }
       }))
@@ -59,7 +59,7 @@
       locateFile: path => `/${path}`,
       print: (...args) => context.log(`[DOSBox] ${args.join(' ')}`),
       printErr: (...args) => context.log(`[DOSBox] ${args.join(' ')}`),
-      setStatus: message => { if (message) context.setLoading(String(message)); },
+      setStatus: message => { if (message) context.setLoading('Preparing Jill of the Jungle…'); },
       onAbort: reason => {
         runtime.state = 'crashed';
         context.log(`DOSBox stopped: ${reason}`);
@@ -70,12 +70,12 @@
   }
 
   function progress(context, detail) {
-    if (detail.phase === 'checking-cache') context.setLoading(`Checking ${detail.key}…`);
+    if (detail.phase === 'checking-cache') context.setLoading('Preparing Jill of the Jungle…');
     if (detail.phase === 'downloading') {
       const percent = detail.total ? Math.floor(detail.received * 100 / detail.total) : 0;
-      context.setLoading(`Caching ${detail.key} from this container…`, `${percent}%`);
+      context.setLoading('Preparing Jill of the Jungle…', `${percent}%`);
     }
-    if (detail.phase === 'restored') context.setLoading(`Restored ${detail.key} from this browser…`);
+    if (detail.phase === 'restored') context.setLoading('Preparing Jill of the Jungle…');
   }
 
   globalThis.WasmGameAdapter = Object.freeze({
@@ -95,7 +95,7 @@
         const prepared = await context.dataClient.load(ownerData(context), {
           onProgress: detail => progress(context, detail)
         });
-        context.setLoading('Loading native DOSBox engine…', '', 55);
+        context.setLoading('Preparing Jill of the Jungle…', '', 55);
         const module = await loadEngine(context);
         context.setLoading('Preparing Jill of the Jungle…', '', 72);
         await context.framework.mountOwnerFiles(module, prepared, {
@@ -109,7 +109,7 @@
           }
         });
         module.FS.chdir('/game');
-        context.setLoading('Starting Jill of the Jungle…', runtime.manifest.executable, 98);
+        context.setLoading('Starting Jill of the Jungle…', '', 98);
         try {
           module.callMain([
             '-c', 'mount c /game',

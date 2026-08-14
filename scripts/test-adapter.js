@@ -27,6 +27,7 @@ for (const [variant, value] of Object.entries(config.variants)) {
 async function exercise(variant) {
   const transitions = [];
   const launches = [];
+  const loading = [];
   let createdPolicy;
   let loadedPolicy;
   let moduleOptions;
@@ -75,12 +76,18 @@ async function exercise(variant) {
     dataClient: {
       async load(policy, options) {
         loadedPolicy = policy;
+        await assert.rejects(
+          policy.files[0].validate({ arrayBuffer: async () => new ArrayBuffer(0) }),
+          /failed SHA-256 verification/
+        );
+        options.onProgress({ phase: 'checking-cache', key: policy.files[0].key });
+        options.onProgress({ phase: 'downloading', key: policy.files[0].key, received: 1, total: 2 });
         options.onProgress({ phase: 'restored', key: policy.files[0].key });
         return { policy, entries: policy.files.map(file => ({ policy: file })) };
       }
     },
     shell: { async resumeAudio() {} },
-    setLoading() {}, log() {},
+    setLoading(...detail) { loading.push(detail); }, log() {},
     setEngineState(state) { transitions.push(state); },
     showRuntime(state) { transitions.push(state); }
   };
@@ -92,6 +99,9 @@ async function exercise(variant) {
   await pending;
   assert.equal(createdPolicy.namespace, dataManifest.variants[variant].namespace);
   assert.equal(loadedPolicy, createdPolicy);
+  moduleOptions.setStatus('Mounting owner data from cache');
+  assert.doesNotMatch(loading.flat().join('\n'), /files?|data|cache|container|browser|mount|verif|directory|folder|path|engine|\.exe/i,
+    'normal loading copy must remain title-focused');
   assert.equal(adapter.readEngineState(), 'gameplay');
   assert.deepEqual(transitions, ['loading', 'gameplay']);
   const invocation = launches.find(call => call[0] === 'callMain');
