@@ -87,19 +87,19 @@
       if (runtime.started) return;
       runtime.started = true;
       await context.shell.resumeAudio();
-      context.setLoading('Restoring Jill of the Jungle data…', '', 5);
+      context.setLoading('Preparing Jill of the Jungle…', '', 5);
       const prepared = await context.dataClient.load(ownerData(context), {
         onProgress: detail => progress(context, detail)
       });
       context.setLoading('Loading native DOSBox engine…', '', 55);
       const module = await loadEngine(context);
-      context.setLoading('Mounting DOS game files…', '', 72);
+      context.setLoading('Preparing Jill of the Jungle…', '', 72);
       await context.framework.mountOwnerFiles(module, prepared, {
         root: '/game',
         mode: 'memfs',
         onProgress(detail) {
           if (detail.phase === 'mounting' && detail.total) {
-            context.setLoading('Mounting DOS game files…', `${Math.floor(detail.copied * 100 / detail.total)}%`,
+            context.setLoading('Preparing Jill of the Jungle…', `${Math.floor(detail.copied * 100 / detail.total)}%`,
               72 + detail.copied * 20 / detail.total);
           }
         }
@@ -119,4 +119,3 @@
     readEngineState() { return runtime.started ? 'gameplay' : 'menu'; }
   });
 })();
-

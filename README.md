@@ -26,7 +26,7 @@ DOS presentation in a contained 4:3 viewport; the browser never stretches it.
 ## Game data
 
 No Jill executable or content file is committed or included in an image. On a
-fresh deployment, open the site and provision the legally owned episode folder
+fresh deployment, open the site and provision the episode folder
 once. The container validates all files by exact name, byte length, and SHA-256
 and stores them beneath its persistent `/data` volume:
 
