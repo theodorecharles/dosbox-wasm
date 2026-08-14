@@ -1,0 +1,917 @@
+{
+  "namespace": "dosbox-jill-family",
+  "version": "owner-data-2026-08-14-v1",
+  "variants": {
+    "jill1": {
+      "namespace": "dosbox-jill-jill1",
+      "version": "owner-data-2026-08-14-v1",
+      "executable": "JILL.EXE",
+      "files": [
+        {
+          "key": "0.dem",
+          "name": "0.DEM",
+          "names": [
+            "0.DEM"
+          ],
+          "path": "jill1/0.DEM",
+          "size": 18824,
+          "sha256": "5f4b8e9a1c2e2187ebba20a234668cf24711e64fac1d0c663309ce319e707a43"
+        },
+        {
+          "key": "1.dem",
+          "name": "1.DEM",
+          "names": [
+            "1.DEM"
+          ],
+          "path": "jill1/1.DEM",
+          "size": 19121,
+          "sha256": "f3ac90c50a44185c273288d786f6bf24f30239ef8fec0d3eee8857ec17f03ba9"
+        },
+        {
+          "key": "1.jn1",
+          "name": "1.JN1",
+          "names": [
+            "1.JN1"
+          ],
+          "path": "jill1/1.JN1",
+          "size": 20359,
+          "sha256": "28068dbc21a97bc3614b90e181812d15f7c0f28d002a6b9f338b452b73eed7a7"
+        },
+        {
+          "key": "2.dem",
+          "name": "2.DEM",
+          "names": [
+            "2.DEM"
+          ],
+          "path": "jill1/2.DEM",
+          "size": 17560,
+          "sha256": "96362043278a28d6b4c6e425968fa9a8b9cd8aff644019b1b9bf07aaa8267a0d"
+        },
+        {
+          "key": "2.jn1",
+          "name": "2.JN1",
+          "names": [
+            "2.JN1"
+          ],
+          "path": "jill1/2.JN1",
+          "size": 19197,
+          "sha256": "75ef63abcb1ab2f9b6ebf6af1b777f4a1671ffcf4e63350834dd567c1ef05883"
+        },
+        {
+          "key": "3.jn1",
+          "name": "3.JN1",
+          "names": [
+            "3.JN1"
+          ],
+          "path": "jill1/3.JN1",
+          "size": 20292,
+          "sha256": "d63845b2526e45aebb4b9c5a9b73b1613783d6c45910e4c164c9df0950fa0816"
+        },
+        {
+          "key": "4.jn1",
+          "name": "4.JN1",
+          "names": [
+            "4.JN1"
+          ],
+          "path": "jill1/4.JN1",
+          "size": 18800,
+          "sha256": "e2f58b78d151a9fc56665575601ad5c047d34f9e3921ea8ec38604737778f581"
+        },
+        {
+          "key": "50.jn1",
+          "name": "50.JN1",
+          "names": [
+            "50.JN1"
+          ],
+          "path": "jill1/50.JN1",
+          "size": 19907,
+          "sha256": "ffcaa4e7a2618c7f0651ed785cd5bc1a17a2d32cfedf625cba504d2cd84a0497"
+        },
+        {
+          "key": "6.jn1",
+          "name": "6.JN1",
+          "names": [
+            "6.JN1"
+          ],
+          "path": "jill1/6.JN1",
+          "size": 20311,
+          "sha256": "4a34a58b46ff92efd69c5056cf89c031b6b0102e04de987e2f135eb2c4315e22"
+        },
+        {
+          "key": "9.jn1",
+          "name": "9.JN1",
+          "names": [
+            "9.JN1"
+          ],
+          "path": "jill1/9.JN1",
+          "size": 19976,
+          "sha256": "454fadd57ebd6f3ec72548e87ff3cb1eeaf6b202a23720a29406927196ffb95e"
+        },
+        {
+          "key": "audio.epc",
+          "name": "AUDIO.EPC",
+          "names": [
+            "AUDIO.EPC"
+          ],
+          "path": "jill1/AUDIO.EPC",
+          "size": 10480,
+          "sha256": "c9c78efbc7bb31f2ab8e33fbb7fb17238cba64cdcbf9301f17e5b42c84a71cf7"
+        },
+        {
+          "key": "dan.ddt",
+          "name": "DAN.DDT",
+          "names": [
+            "DAN.DDT"
+          ],
+          "path": "jill1/DAN.DDT",
+          "size": 10240,
+          "sha256": "341f5a55e532aa65bf476c72a3d15c021c80bf98b5ddcfe4361f8459baea863d"
+        },
+        {
+          "key": "end1.mac",
+          "name": "END1.MAC",
+          "names": [
+            "END1.MAC"
+          ],
+          "path": "jill1/END1.MAC",
+          "size": 545,
+          "sha256": "9366949c4ccb0c1c82e673677861bdf361eab1ed20c644a84d405fe8580e280b"
+        },
+        {
+          "key": "funky.ddt",
+          "name": "FUNKY.DDT",
+          "names": [
+            "FUNKY.DDT"
+          ],
+          "path": "jill1/FUNKY.DDT",
+          "size": 12160,
+          "sha256": "d1ac5d62eadee4746170eac0e8773911bb61a4d0b99ead157566286ea9ddf689"
+        },
+        {
+          "key": "intro.jn1",
+          "name": "INTRO.JN1",
+          "names": [
+            "INTRO.JN1"
+          ],
+          "path": "jill1/INTRO.JN1",
+          "size": 25482,
+          "sha256": "785f7bbd6e58550f1b498b2f515d97d7dd4ecdaa90c1ea4e2917da24ec8a46a4"
+        },
+        {
+          "key": "it.ddt",
+          "name": "IT.DDT",
+          "names": [
+            "IT.DDT"
+          ],
+          "path": "jill1/IT.DDT",
+          "size": 5698,
+          "sha256": "24784f4ef3b25f45dc8361940c160de81e49ab9ce12ce9a6062e8ebca373a84c"
+        },
+        {
+          "key": "jill.dma",
+          "name": "JILL.DMA",
+          "names": [
+            "JILL.DMA"
+          ],
+          "path": "jill1/JILL.DMA",
+          "size": 4160,
+          "sha256": "7186441b909a452519f10a740edd923bceb6174a517dd5876c82942ec65434cd"
+        },
+        {
+          "key": "jill.exe",
+          "name": "JILL.EXE",
+          "names": [
+            "JILL.EXE"
+          ],
+          "path": "jill1/JILL.EXE",
+          "size": 219216,
+          "sha256": "23204542885449449f96efb557db63d1bf968303a356a6c1f08312683d77b4ae"
+        },
+        {
+          "key": "jill1.sha",
+          "name": "JILL1.SHA",
+          "names": [
+            "JILL1.SHA"
+          ],
+          "path": "jill1/JILL1.SHA",
+          "size": 260553,
+          "sha256": "d0b0c7b853b20b3a5120391d321231f436536fc15c1412da0fd7361bd8e3f401"
+        },
+        {
+          "key": "jill1.vcl",
+          "name": "JILL1.VCL",
+          "names": [
+            "JILL1.VCL"
+          ],
+          "path": "jill1/JILL1.VCL",
+          "size": 94954,
+          "sha256": "b5150cbda82e7c52bac5d83f9678235c8595f0c81aebffd5535b4b189cd8e3d9"
+        },
+        {
+          "key": "jn1demo.mac",
+          "name": "JN1DEMO.MAC",
+          "names": [
+            "JN1DEMO.MAC"
+          ],
+          "path": "jill1/JN1DEMO.MAC",
+          "size": 2091,
+          "sha256": "f1e4c2b30804ab2f128a4c131dacef505caa572135b8a57f1922766993b15be7"
+        },
+        {
+          "key": "jupiter.ddt",
+          "name": "JUPITER.DDT",
+          "names": [
+            "JUPITER.DDT"
+          ],
+          "path": "jill1/JUPITER.DDT",
+          "size": 8951,
+          "sha256": "0f2529dd16d74f8f47fb89c44edd319e652f82ee1878ecaafee3416c91e5f3b2"
+        },
+        {
+          "key": "map.jn1",
+          "name": "MAP.JN1",
+          "names": [
+            "MAP.JN1"
+          ],
+          "path": "jill1/MAP.JN1",
+          "size": 18685,
+          "sha256": "554764aef47b6095787a510dd57007892c290d224765b1537812f2814968c489"
+        },
+        {
+          "key": "ominous.ddt",
+          "name": "OMINOUS.DDT",
+          "names": [
+            "OMINOUS.DDT"
+          ],
+          "path": "jill1/OMINOUS.DDT",
+          "size": 10507,
+          "sha256": "92c56c6a9d8d926ce7a8d0fbc82c37b863b54744b450a4e807d6e91d4a67bc8a"
+        },
+        {
+          "key": "seven.ddt",
+          "name": "SEVEN.DDT",
+          "names": [
+            "SEVEN.DDT"
+          ],
+          "path": "jill1/SEVEN.DDT",
+          "size": 14336,
+          "sha256": "2427213f0d9923b0e35764a8ef5ad4b43696f7a9c317ea5b7be669e806f1fdc0"
+        },
+        {
+          "key": "spiders.ddt",
+          "name": "SPIDERS.DDT",
+          "names": [
+            "SPIDERS.DDT"
+          ],
+          "path": "jill1/SPIDERS.DDT",
+          "size": 13525,
+          "sha256": "0b2885ca5a12333ecb033de4e4f5012c7ff8aad03107385d13b88d4a3a5c1f2d"
+        },
+        {
+          "key": "stealth.ddt",
+          "name": "STEALTH.DDT",
+          "names": [
+            "STEALTH.DDT"
+          ],
+          "path": "jill1/STEALTH.DDT",
+          "size": 16233,
+          "sha256": "7373307b847071838d99d37f81b6352341c73e6afcee9116215312ff24268978"
+        },
+        {
+          "key": "zeppelin.ddt",
+          "name": "ZEPPELIN.DDT",
+          "names": [
+            "ZEPPELIN.DDT"
+          ],
+          "path": "jill1/ZEPPELIN.DDT",
+          "size": 9930,
+          "sha256": "b55b1a422cfdadca9d23a12ae8f4093147b9d227fa0e252ea8be315f92cae4d8"
+        }
+      ]
+    },
+    "jill2": {
+      "namespace": "dosbox-jill-jill2",
+      "version": "owner-data-2026-08-14-v1",
+      "executable": "JILL2.EXE",
+      "files": [
+        {
+          "key": "0.jn2",
+          "name": "0.JN2",
+          "names": [
+            "0.JN2"
+          ],
+          "path": "jill2/0.JN2",
+          "size": 17965,
+          "sha256": "50de94fcb981c893a02c44c19a6d8469f750898a657b57028b5012d10bb66807"
+        },
+        {
+          "key": "1.jn2",
+          "name": "1.JN2",
+          "names": [
+            "1.JN2"
+          ],
+          "path": "jill2/1.JN2",
+          "size": 19354,
+          "sha256": "24baf9c69619d102ea9f40d784853d8dae350da48e58562385d75c96242ff185"
+        },
+        {
+          "key": "10.jn2",
+          "name": "10.JN2",
+          "names": [
+            "10.JN2"
+          ],
+          "path": "jill2/10.JN2",
+          "size": 19345,
+          "sha256": "db3069efb304ae025dad813b5601997b8c5869c8229a67da442b99330c1e79ba"
+        },
+        {
+          "key": "11.jn2",
+          "name": "11.JN2",
+          "names": [
+            "11.JN2"
+          ],
+          "path": "jill2/11.JN2",
+          "size": 20436,
+          "sha256": "86ea8d25281387577819dedd8f700547a1538193bac6f45e94813c3a81ff406e"
+        },
+        {
+          "key": "13.jn2",
+          "name": "13.JN2",
+          "names": [
+            "13.JN2"
+          ],
+          "path": "jill2/13.JN2",
+          "size": 20179,
+          "sha256": "a01a8c3ab84e50ec88b9b46e611833f3ccba85f8d41cf3e7358dd8fe2a931f06"
+        },
+        {
+          "key": "15.jn2",
+          "name": "15.JN2",
+          "names": [
+            "15.JN2"
+          ],
+          "path": "jill2/15.JN2",
+          "size": 19093,
+          "sha256": "9d002dc8508a23963f2da616e01585d7a645c00fb9c691b67f5b155b84c78e07"
+        },
+        {
+          "key": "17.jn2",
+          "name": "17.JN2",
+          "names": [
+            "17.JN2"
+          ],
+          "path": "jill2/17.JN2",
+          "size": 20726,
+          "sha256": "86dad8a8319d0226eaafeabb76adbfcdefbecef649871ddb8e2abca489bb3b80"
+        },
+        {
+          "key": "20.jn2",
+          "name": "20.JN2",
+          "names": [
+            "20.JN2"
+          ],
+          "path": "jill2/20.JN2",
+          "size": 18239,
+          "sha256": "899d135d2d9e4b5b2aa4d0e6a6372faf25e322921b5de43678ce86bb5364cfa4"
+        },
+        {
+          "key": "3.jn2",
+          "name": "3.JN2",
+          "names": [
+            "3.JN2"
+          ],
+          "path": "jill2/3.JN2",
+          "size": 20708,
+          "sha256": "ab3c7b52b93aacd29c1d00de42b67736eb1b76e40e6e874bc2ad00feb86a1b36"
+        },
+        {
+          "key": "9.jn2",
+          "name": "9.JN2",
+          "names": [
+            "9.JN2"
+          ],
+          "path": "jill2/9.JN2",
+          "size": 18874,
+          "sha256": "395ab9a6e3dcf79b1ae1846c68aeb4d65e84d027775861f44cf27e4091b45150"
+        },
+        {
+          "key": "action.ddt",
+          "name": "ACTION.DDT",
+          "names": [
+            "ACTION.DDT"
+          ],
+          "path": "jill2/ACTION.DDT",
+          "size": 17358,
+          "sha256": "53a9c8e376b38d09921c9e73cabe426d95a466eed7f1d39ec02bac6ca5164c55"
+        },
+        {
+          "key": "bonzo.ddt",
+          "name": "BONZO.DDT",
+          "names": [
+            "BONZO.DDT"
+          ],
+          "path": "jill2/BONZO.DDT",
+          "size": 17145,
+          "sha256": "d4d67b8645e8fc0d7557f41e488f32fa6d77d7f73d3b1bf1544d58d0dc29038e"
+        },
+        {
+          "key": "cubist.ddt",
+          "name": "CUBIST.DDT",
+          "names": [
+            "CUBIST.DDT"
+          ],
+          "path": "jill2/CUBIST.DDT",
+          "size": 12017,
+          "sha256": "aa5b4710ce382ba90940095826adf3971935fa62735134434eebb7ec564a2915"
+        },
+        {
+          "key": "dungo.ddt",
+          "name": "DUNGO.DDT",
+          "names": [
+            "DUNGO.DDT"
+          ],
+          "path": "jill2/DUNGO.DDT",
+          "size": 8906,
+          "sha256": "71c9ace9de1133e6c6bcf7a4f8cd4d3498098365a6fe110d9ae2196c0c97c7ec"
+        },
+        {
+          "key": "end2.mac",
+          "name": "END2.MAC",
+          "names": [
+            "END2.MAC"
+          ],
+          "path": "jill2/END2.MAC",
+          "size": 120,
+          "sha256": "c2a80cf5ec3ee7d0539eb0bded044beb6d6070415fbcf2791d2bf0b7dff83603"
+        },
+        {
+          "key": "intro.jn2",
+          "name": "INTRO.JN2",
+          "names": [
+            "INTRO.JN2"
+          ],
+          "path": "jill2/INTRO.JN2",
+          "size": 24250,
+          "sha256": "226f7129562a87c8dae7231e16509f2978e899f0c27369df32c81650578e4169"
+        },
+        {
+          "key": "jill.dma",
+          "name": "JILL.DMA",
+          "names": [
+            "JILL.DMA"
+          ],
+          "path": "jill2/JILL.DMA",
+          "size": 4160,
+          "sha256": "7186441b909a452519f10a740edd923bceb6174a517dd5876c82942ec65434cd"
+        },
+        {
+          "key": "jill2.exe",
+          "name": "JILL2.EXE",
+          "names": [
+            "JILL2.EXE"
+          ],
+          "path": "jill2/JILL2.EXE",
+          "size": 204096,
+          "sha256": "052a51918db8328f73634773daebaae60c24fde1ce0525b7015242f6b402501a"
+        },
+        {
+          "key": "jill2.sha",
+          "name": "JILL2.SHA",
+          "names": [
+            "JILL2.SHA"
+          ],
+          "path": "jill2/JILL2.SHA",
+          "size": 260553,
+          "sha256": "81b506332f82116d44c5b70973a07f520799130722dbcc2920d23fc0912d41f6"
+        },
+        {
+          "key": "jill2.vcl",
+          "name": "JILL2.VCL",
+          "names": [
+            "JILL2.VCL"
+          ],
+          "path": "jill2/JILL2.VCL",
+          "size": 85515,
+          "sha256": "6881815e118e07e205d7e7785400f8ab7b7b254282c77ebf525ab3fd72d28ec7"
+        },
+        {
+          "key": "jn2dem1.mac",
+          "name": "JN2DEM1.MAC",
+          "names": [
+            "JN2DEM1.MAC"
+          ],
+          "path": "jill2/JN2DEM1.MAC",
+          "size": 406,
+          "sha256": "fdec3a1f5779303e32b8adbcfa3069772d5c4e820e11eb8e6e1a0b4d3f04367f"
+        },
+        {
+          "key": "jn2dem2.mac",
+          "name": "JN2DEM2.MAC",
+          "names": [
+            "JN2DEM2.MAC"
+          ],
+          "path": "jill2/JN2DEM2.MAC",
+          "size": 512,
+          "sha256": "645a7c142981f350cd71758db5f980da8184fa2afc18d825c4833eae1caa1195"
+        },
+        {
+          "key": "jn2dem3.mac",
+          "name": "JN2DEM3.MAC",
+          "names": [
+            "JN2DEM3.MAC"
+          ],
+          "path": "jill2/JN2DEM3.MAC",
+          "size": 484,
+          "sha256": "39b6af9b58622e831031e9a8eccf187544d8078e3c8205b9a54b98b21822ec6d"
+        },
+        {
+          "key": "mobydick.ddt",
+          "name": "MOBYDICK.DDT",
+          "names": [
+            "MOBYDICK.DDT"
+          ],
+          "path": "jill2/MOBYDICK.DDT",
+          "size": 14529,
+          "sha256": "682b7f2483560939f7c643aa72aeb47a5c92958a8adf4077bfaae21408487764"
+        },
+        {
+          "key": "peaks.ddt",
+          "name": "PEAKS.DDT",
+          "names": [
+            "PEAKS.DDT"
+          ],
+          "path": "jill2/PEAKS.DDT",
+          "size": 6966,
+          "sha256": "be5ed30e79b91b71ef33a2c32aa011f33a40fd3dd640251a74e59c432913c17f"
+        },
+        {
+          "key": "temp",
+          "name": "TEMP",
+          "names": [
+            "TEMP"
+          ],
+          "path": "jill2/TEMP",
+          "size": 18773,
+          "sha256": "e280929d9f8284b085c032b84d95e3f3eda3d5f3ddfb42d8f8fa3588ada0c499"
+        },
+        {
+          "key": "undrgrnd.ddt",
+          "name": "UNDRGRND.DDT",
+          "names": [
+            "UNDRGRND.DDT"
+          ],
+          "path": "jill2/UNDRGRND.DDT",
+          "size": 8707,
+          "sha256": "6bb5dcb02af6a2e64c9f68b7be2341c423c89f42cc99a728844cdcb745453f4c"
+        }
+      ]
+    },
+    "jill3": {
+      "namespace": "dosbox-jill-jill3",
+      "version": "owner-data-2026-08-14-v1",
+      "executable": "JILL3.EXE",
+      "files": [
+        {
+          "key": "1.jn3",
+          "name": "1.JN3",
+          "names": [
+            "1.JN3"
+          ],
+          "path": "jill3/1.JN3",
+          "size": 17310,
+          "sha256": "da89ae342de2a97a7d6670b666a2a8a9c5bd79871a822713d619fe06075da839"
+        },
+        {
+          "key": "10.jn3",
+          "name": "10.JN3",
+          "names": [
+            "10.JN3"
+          ],
+          "path": "jill3/10.JN3",
+          "size": 17561,
+          "sha256": "63a90810739d6737e52eca65bef6aa17862a18090fae6686184c49884ec893ba"
+        },
+        {
+          "key": "11.jn3",
+          "name": "11.JN3",
+          "names": [
+            "11.JN3"
+          ],
+          "path": "jill3/11.JN3",
+          "size": 19142,
+          "sha256": "247b5304d1b5158df11a0d94cabaec089e2d9fa87c3f3b9c1a3917d01e070ffc"
+        },
+        {
+          "key": "12.jn3",
+          "name": "12.JN3",
+          "names": [
+            "12.JN3"
+          ],
+          "path": "jill3/12.JN3",
+          "size": 19942,
+          "sha256": "93d55b956f50fd08323d7e52ebc782e13a140accc17d89ce5513517423dfc35d"
+        },
+        {
+          "key": "13.jn3",
+          "name": "13.JN3",
+          "names": [
+            "13.JN3"
+          ],
+          "path": "jill3/13.JN3",
+          "size": 19328,
+          "sha256": "eb470de688ac81ae7358c26f3640c2b35ffcaef61f461f487dee480abdde0291"
+        },
+        {
+          "key": "14.jn3",
+          "name": "14.JN3",
+          "names": [
+            "14.JN3"
+          ],
+          "path": "jill3/14.JN3",
+          "size": 21601,
+          "sha256": "c9ea4058fab65888110ee3ddad9ec6001cb214177faf0b3902dcb9c86653a119"
+        },
+        {
+          "key": "2.jn3",
+          "name": "2.JN3",
+          "names": [
+            "2.JN3"
+          ],
+          "path": "jill3/2.JN3",
+          "size": 19199,
+          "sha256": "d205dee603a951bafb2b5b8b625b2d487558eb59ae537e7a1543f11a1c519f29"
+        },
+        {
+          "key": "3.jn3",
+          "name": "3.JN3",
+          "names": [
+            "3.JN3"
+          ],
+          "path": "jill3/3.JN3",
+          "size": 18189,
+          "sha256": "93d71a2db9e4074554a1b19873b53d20ece225d28702c1156f698ccbf880e28a"
+        },
+        {
+          "key": "4.jn3",
+          "name": "4.JN3",
+          "names": [
+            "4.JN3"
+          ],
+          "path": "jill3/4.JN3",
+          "size": 17723,
+          "sha256": "fb28920b10a733fe96b9b4912ca081575cefac4e51a2f45abbc115053e8c0ef1"
+        },
+        {
+          "key": "5.jn3",
+          "name": "5.JN3",
+          "names": [
+            "5.JN3"
+          ],
+          "path": "jill3/5.JN3",
+          "size": 19222,
+          "sha256": "ba3fa62312c4fa7993faccffb0df0961a45eea07a4843cde26b1ff7bb8e75659"
+        },
+        {
+          "key": "6.jn3",
+          "name": "6.JN3",
+          "names": [
+            "6.JN3"
+          ],
+          "path": "jill3/6.JN3",
+          "size": 17951,
+          "sha256": "64233a7ce6643e86b397ed34973549bf4fa56b3e2583deecd2bf656acd7568c7"
+        },
+        {
+          "key": "7.jn3",
+          "name": "7.JN3",
+          "names": [
+            "7.JN3"
+          ],
+          "path": "jill3/7.JN3",
+          "size": 18550,
+          "sha256": "1a7564d4622247d40813a726b1f6a1ffbf44ee9736baec2cd34e7e8d73b48f8f"
+        },
+        {
+          "key": "8.jn3",
+          "name": "8.JN3",
+          "names": [
+            "8.JN3"
+          ],
+          "path": "jill3/8.JN3",
+          "size": 17972,
+          "sha256": "7d9c5a4f70a227b5b2cde0637d87a68577659bdd3c8f8e8175a28da9c2f9001a"
+        },
+        {
+          "key": "9.jn3",
+          "name": "9.JN3",
+          "names": [
+            "9.JN3"
+          ],
+          "path": "jill3/9.JN3",
+          "size": 18891,
+          "sha256": "cfb27df4623930333006a24b2387a0cbbea37c555f7c72ac2619cbdc42a4ae7c"
+        },
+        {
+          "key": "alien.ddt",
+          "name": "ALIEN.DDT",
+          "names": [
+            "ALIEN.DDT"
+          ],
+          "path": "jill3/ALIEN.DDT",
+          "size": 7887,
+          "sha256": "8701e04bfeaa32a3ad18af66ed24edd54483d1ffc0402480f19184e14639bd32"
+        },
+        {
+          "key": "cubist.ddt",
+          "name": "CUBIST.DDT",
+          "names": [
+            "CUBIST.DDT"
+          ],
+          "path": "jill3/CUBIST.DDT",
+          "size": 12017,
+          "sha256": "aa5b4710ce382ba90940095826adf3971935fa62735134434eebb7ec564a2915"
+        },
+        {
+          "key": "dan.ddt",
+          "name": "DAN.DDT",
+          "names": [
+            "DAN.DDT"
+          ],
+          "path": "jill3/DAN.DDT",
+          "size": 10240,
+          "sha256": "341f5a55e532aa65bf476c72a3d15c021c80bf98b5ddcfe4361f8459baea863d"
+        },
+        {
+          "key": "deepevil.ddt",
+          "name": "DEEPEVIL.DDT",
+          "names": [
+            "DEEPEVIL.DDT"
+          ],
+          "path": "jill3/DEEPEVIL.DDT",
+          "size": 22178,
+          "sha256": "62895d0645eb1b6ce27b567bf51d1c781a00dada022d6655845f8a88811a516e"
+        },
+        {
+          "key": "desert.ddt",
+          "name": "DESERT.DDT",
+          "names": [
+            "DESERT.DDT"
+          ],
+          "path": "jill3/DESERT.DDT",
+          "size": 6254,
+          "sha256": "facfc45ae454de93df9ff313724a30ae9c3d45278a88c3aa5ac4558d9fa076b0"
+        },
+        {
+          "key": "intro.jn3",
+          "name": "INTRO.JN3",
+          "names": [
+            "INTRO.JN3"
+          ],
+          "path": "jill3/INTRO.JN3",
+          "size": 22782,
+          "sha256": "87dc56eba4267e280fcaf7e101b4cbc19d7f5fd6f7358007b5d1e5251ea91df1"
+        },
+        {
+          "key": "jill.dma",
+          "name": "JILL.DMA",
+          "names": [
+            "JILL.DMA"
+          ],
+          "path": "jill3/JILL.DMA",
+          "size": 4160,
+          "sha256": "7186441b909a452519f10a740edd923bceb6174a517dd5876c82942ec65434cd"
+        },
+        {
+          "key": "jill3.exe",
+          "name": "JILL3.EXE",
+          "names": [
+            "JILL3.EXE"
+          ],
+          "path": "jill3/JILL3.EXE",
+          "size": 204425,
+          "sha256": "9d533dad47df17bf434af7c400f31a281ec7bf53bd1ee94142192cd11739276b"
+        },
+        {
+          "key": "jill3.sha",
+          "name": "JILL3.SHA",
+          "names": [
+            "JILL3.SHA"
+          ],
+          "path": "jill3/JILL3.SHA",
+          "size": 263884,
+          "sha256": "40243762f2886fd969e02c2a27cf233dd14abfc578e4af2c5162fa07eae46402"
+        },
+        {
+          "key": "jill3.vcl",
+          "name": "JILL3.VCL",
+          "names": [
+            "JILL3.VCL"
+          ],
+          "path": "jill3/JILL3.VCL",
+          "size": 75528,
+          "sha256": "8f7c74b86c97b2eab3d7a2e80690324b4d36e660d30a0e6c17629b693c8883fc"
+        },
+        {
+          "key": "jn3dem1.mac",
+          "name": "JN3DEM1.MAC",
+          "names": [
+            "JN3DEM1.MAC"
+          ],
+          "path": "jill3/JN3DEM1.MAC",
+          "size": 550,
+          "sha256": "67bd2b0653373af186b56644d1f86d7c318a8dc41d50865f2dad7562ac090cbf"
+        },
+        {
+          "key": "jn3dem2.mac",
+          "name": "JN3DEM2.MAC",
+          "names": [
+            "JN3DEM2.MAC"
+          ],
+          "path": "jill3/JN3DEM2.MAC",
+          "size": 553,
+          "sha256": "c44f76df9fd8ef546f0f78b882247189cf343c73e7d674ffdf5459a51b6d396e"
+        },
+        {
+          "key": "jn3dem3.mac",
+          "name": "JN3DEM3.MAC",
+          "names": [
+            "JN3DEM3.MAC"
+          ],
+          "path": "jill3/JN3DEM3.MAC",
+          "size": 631,
+          "sha256": "5d73e6a641e475a787e8e7196499fe439e27fd4f58e38cacb70aad6d8b4270dc"
+        },
+        {
+          "key": "kuntamon.ddt",
+          "name": "KUNTAMON.DDT",
+          "names": [
+            "KUNTAMON.DDT"
+          ],
+          "path": "jill3/KUNTAMON.DDT",
+          "size": 14520,
+          "sha256": "736a0846843d0590f738841b919426ccdbd4a49d4d6755e395b386e620d61cf3"
+        },
+        {
+          "key": "map.jn3",
+          "name": "MAP.JN3",
+          "names": [
+            "MAP.JN3"
+          ],
+          "path": "jill3/MAP.JN3",
+          "size": 17603,
+          "sha256": "b657e255bbd6479981cb106c98d917c68d6b6ed388fd98572d59e5d002e0ed4b"
+        },
+        {
+          "key": "neoclass.ddt",
+          "name": "NEOCLASS.DDT",
+          "names": [
+            "NEOCLASS.DDT"
+          ],
+          "path": "jill3/NEOCLASS.DDT",
+          "size": 8747,
+          "sha256": "d823ec6f45f5927ef4b93876fc70bc8c5f9b01c92b156df33986bb041c39f957"
+        },
+        {
+          "key": "seven.ddt",
+          "name": "SEVEN.DDT",
+          "names": [
+            "SEVEN.DDT"
+          ],
+          "path": "jill3/SEVEN.DDT",
+          "size": 14336,
+          "sha256": "2427213f0d9923b0e35764a8ef5ad4b43696f7a9c317ea5b7be669e806f1fdc0"
+        },
+        {
+          "key": "stealth.ddt",
+          "name": "STEALTH.DDT",
+          "names": [
+            "STEALTH.DDT"
+          ],
+          "path": "jill3/STEALTH.DDT",
+          "size": 16233,
+          "sha256": "7373307b847071838d99d37f81b6352341c73e6afcee9116215312ff24268978"
+        },
+        {
+          "key": "temp",
+          "name": "TEMP",
+          "names": [
+            "TEMP"
+          ],
+          "path": "jill3/TEMP",
+          "size": 17096,
+          "sha256": "cae7c5893735940c7e72da34094a945cb445f83bfe54879ca468b4b9cce46255"
+        },
+        {
+          "key": "wild.ddt",
+          "name": "WILD.DDT",
+          "names": [
+            "WILD.DDT"
+          ],
+          "path": "jill3/WILD.DDT",
+          "size": 5680,
+          "sha256": "021804e0a33cdeb224759e3851d5508e2a2651532ffa3cc540a00dd00382a7f0"
+        }
+      ]
+    }
+  }
+}

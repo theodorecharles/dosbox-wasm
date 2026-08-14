@@ -1,0 +1,20 @@
+/build-web/
+/web/dist/
+/vendor/dosbox/autom4te.cache/
+*.log
+*.swp
+*~
+
+# Legally owned DOS game data never belongs in Git or container images.
+/data/
+*.jn1
+*.jn2
+*.jn3
+*.sha
+*.vcl
+*.ddt
+*.dma
+*.dem
+*.mac
+*.epc
+JILL*.EXE

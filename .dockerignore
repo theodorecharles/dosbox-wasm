@@ -1,0 +1,17 @@
+.git
+build-web
+data
+web/dist
+*.log
+*.jn1
+*.jn2
+*.jn3
+*.sha
+*.vcl
+*.ddt
+*.dma
+*.dem
+*.mac
+*.epc
+JILL*.EXE
+
