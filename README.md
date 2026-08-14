@@ -41,15 +41,15 @@ download from the container. `/data` itself is never exposed as an HTTP route.
 ## Build
 
 Prerequisites are Emscripten, Autoconf/Automake, Node.js, WABT, ImageMagick,
-Docker, and an exact checkout of `wasm-game-framework` v0.7.1 at `9359fb1`.
+Docker, and an exact checkout of `wasm-game-framework` v0.7.2 at `e4b78d6`.
 
 ```bash
 EMSDK_DIR=/path/to/emsdk \
-WASM_FRAMEWORK_DIR=/path/to/wasm-game-framework-v0.7.1 \
+WASM_FRAMEWORK_DIR=/path/to/wasm-game-framework-v0.7.2 \
 ./scripts/test-web.sh
 
 EMSDK_DIR=/path/to/emsdk \
-WASM_FRAMEWORK_DIR=/path/to/wasm-game-framework-v0.7.1 \
+WASM_FRAMEWORK_DIR=/path/to/wasm-game-framework-v0.7.2 \
 ./scripts/build-images.sh
 ```
 
