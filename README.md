@@ -54,7 +54,8 @@ data.
 ## Build
 
 Prerequisites are Emscripten, Autoconf/Automake, Node.js, WABT, ImageMagick,
-Docker, and an exact checkout of `wasm-game-framework` v0.7.6 at `e617f09`.
+Docker, and an exact checkout of `wasm-game-framework` v0.7.6 at
+`e617f090deaa294dacd033afa52c09f811a3e690`.
 
 ```bash
 EMSDK_DIR=/path/to/emsdk \

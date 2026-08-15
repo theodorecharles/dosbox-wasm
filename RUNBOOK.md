@@ -77,7 +77,8 @@ WASM_FRAMEWORK_DIR=/home/ted/Development/wasm/wasm-game-framework \
 ./scripts/build-images.sh
 ```
 
-Both scripts require framework v0.7.6 at commit `e617f09`. The target uses the
+Both scripts require framework v0.7.6 at commit
+`e617f090deaa294dacd033afa52c09f811a3e690`. The target uses the
 portable normal CPU core, SDL surface renderer and audio, Asyncify-backed
 browser yielding, growing memory, and a modularized JavaScript factory.
 Physical CD-ROM, dynamic CPU recompilation, OpenGL output, SDL_net, and MIDI

@@ -4,7 +4,7 @@ set -euo pipefail
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 framework_dir="${WASM_FRAMEWORK_DIR:-$repo_dir/../wasm-game-framework}"
 required_version="0.7.6"
-required_commit="e617f09"
+required_commit="e617f090deaa294dacd033afa52c09f811a3e690"
 running_container=''
 
 cleanup() {

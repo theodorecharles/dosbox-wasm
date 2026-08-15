@@ -9,7 +9,7 @@ emsdk_dir="${EMSDK_DIR:-/home/ted/emsdk}"
 framework_dir="${WASM_FRAMEWORK_DIR:-$repo_dir/../wasm-game-framework}"
 jobs="${JOBS:-$(getconf _NPROCESSORS_ONLN 2>/dev/null || printf '8')}"
 required_framework_version="0.7.6"
-required_framework_commit="e617f09"
+required_framework_commit="e617f090deaa294dacd033afa52c09f811a3e690"
 
 if [[ ! -f "$emsdk_dir/emsdk_env.sh" ]]; then
   printf 'Emscripten SDK environment not found at %s\n' "$emsdk_dir" >&2
