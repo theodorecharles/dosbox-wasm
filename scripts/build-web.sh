@@ -16,7 +16,7 @@ if [[ ! -f "$emsdk_dir/emsdk_env.sh" ]]; then
   exit 1
 fi
 if [[ "$(node -p "require('${framework_dir}/package.json').version")" != "$required_framework_version" || \
-      "$(git -C "$framework_dir" rev-parse --short=7 HEAD)" != "$required_framework_commit" ]]; then
+      "$(git -C "$framework_dir" rev-parse HEAD)" != "$required_framework_commit" ]]; then
   printf 'dosbox-wasm requires wasm-game-framework %s at %s.\n' \
     "$required_framework_version" "$required_framework_commit" >&2
   exit 1

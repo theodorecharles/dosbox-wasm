@@ -28,7 +28,7 @@ smoke_image() {
 }
 
 [[ "$(node -p "require('${framework_dir}/package.json').version")" == "$required_version" ]]
-[[ "$(git -C "$framework_dir" rev-parse --short=7 HEAD)" == "$required_commit" ]]
+[[ "$(git -C "$framework_dir" rev-parse HEAD)" == "$required_commit" ]]
 
 EMSDK_DIR="${EMSDK_DIR:-/home/ted/emsdk}" WASM_FRAMEWORK_DIR="$framework_dir" \
   "$repo_dir/scripts/build-web.sh"
