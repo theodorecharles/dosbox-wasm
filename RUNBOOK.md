@@ -77,8 +77,8 @@ WASM_FRAMEWORK_DIR=/home/ted/Development/wasm/wasm-game-framework \
 ./scripts/build-images.sh
 ```
 
-Both scripts require framework v0.9.2 at commit
-`53bc7e6eeef1ae35dcf3b25dea4e3ec0ab46726f`. The target uses the
+Both scripts require framework v0.9.4 at commit
+`c4ad3b9e075f881d32f044299fbfeee703a9169d`. The target uses the
 portable normal CPU core, SDL surface renderer and audio, bounded native
 timeslices, growing memory, and a modularized JavaScript factory. Asyncify runs
 only between completed DOSBox machine timeslices: unwinding from inside the
@@ -87,7 +87,7 @@ observed SDL audio-queue function-table crash.
 Physical CD-ROM, dynamic CPU recompilation, OpenGL output, SDL_net, and MIDI
 backends remain disabled.
 
-## Persistence and controller map
+## Persistence and keyboard map
 
 Framework persistence is enabled for all nine variants. Each resolved root is
 unique and is attached before native main:
@@ -105,19 +105,10 @@ lifecycle flushes. A hard-refresh acceptance pass must change both a DOSBox
 configuration value and title-specific save/setting, then verify both are read
 before the next native main reaches gameplay.
 
-Controller frames enter a native DOSBox queue; no synthetic DOM input is used.
-The common left-stick directions are the arrow keys. Per-title actions are:
-
-| Variant | Controller actions mapped to original DOS input |
-| --- | --- |
-| Jill 1/2/3 | A: Shift (jump), RT: Alt (attack), Y: Enter, Menu: Escape |
-| Jazz Jackrabbit | A: Alt, RT: Space, Y: Ctrl, LB: Shift, Menu: Escape |
-| Duke Nukem 1/2 | A: Ctrl, RT: Alt, Y: Enter, Menu: Escape |
-| GTA DOS demo | A: Space, RT: Ctrl, Y: Enter, LB/RB: Z/X, View: Tab, Menu: F6 |
-| The Need for Speed | A: Space, Y: Enter, View: Tab, Menu: Escape |
-| SimCity 2000 | right stick: mouse, A/RT: left click, LT: right click, Y: Enter, Menu: Escape |
-
-Hot-unplug and disabled selection release all held keys and mouse buttons.
+The suite declares controller mode `disabled`. Focused browser keyboard events
+are translated into the native DOSBox queue, including arrows, letters,
+digits, Enter, Ctrl, Alt, Shift, Escape, function keys, and punctuation. Focus
+loss or a hidden page releases every held key.
 
 ## Container lifecycle
 
@@ -172,22 +163,21 @@ All titles remain **Still in development** until a Chrome runtime pass verifies:
 2. first-time provisioning and later IndexedDB restoration;
 3. nested directory reconstruction for GTA, NFS, and SimCity 2000;
 4. each configured DOS command reaches its title/menu and playable state;
-5. WASD/arrows, the controller mapping above (including hot-unplug),
-   audio-after-Play, and fullscreen preference;
+5. keyboard input, audio-after-Play, and fullscreen preference;
 6. password-disabled and password-enabled launcher behavior;
 7. no direct `/data` or `/local-data` route under fresh or cached launches.
 
 The automated native-Wasm regression runs an infinite DOS program through the
 production SDL loop, checks the 640x400 surface, queues multiple audio buffers,
-and injects native keyboard/mouse controller events without a trap. Static and
-HTTP tests cover all nine isolated persistence roots and mapping families.
+and injects native keyboard/mouse events without a trap. Static and HTTP tests
+cover all nine isolated persistence roots.
 Native DOSBox smoke tests previously reached every prepared executable; NFS
 reached its car intro and SimCity 2000 reached its intro. None of that replaces
 the explicit Chrome milestone above.
 
 ### Isolated Chrome evidence (2026-08-15)
 
-The exact final v0.9.2 suite image was served from an isolated local container
+The exact repaired suite image was served from an isolated local container
 and port, without using a Game Lab or live service:
 
 - Jill of the Jungle Episode 1 remained responsive past the former null-call /
@@ -204,8 +194,7 @@ and port, without using a Game Lab or live service:
 
 The crash/canvas repair needs no further reproduction-specific Chrome work.
 The broader nine-title release milestone still needs the other seven titles,
-an actual save plus changed configuration surviving hard refresh, physical
-controller connect/hot-unplug behavior across the mapping families, audible
+an actual save plus changed configuration surviving hard refresh, audible
 audio/focus-resume, fullscreen/PWA identity, and password-enabled launcher
 coverage. The isolated container was removed, its temporary owner content was
 deleted, and every Chrome tab used for the pass was finalized.

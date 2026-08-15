@@ -3,7 +3,7 @@
 
   const runtime = {
     module: null, manifest: null, started: false, state: 'launcher',
-    heldKeys: new Map(), heldButtons: new Map(), mouseX: 0, mouseY: 0
+    heldKeys: new Map(), heldButtons: new Map(), keyboardHeld: new Set(), mouseX: 0, mouseY: 0
   };
   const key = Object.freeze({
     enter: 13, escape: 27, space: 32, tab: 9, z: 122, x: 120,
@@ -24,6 +24,25 @@
     nfs: { jump: key.space, weapon: key.enter, scoreboard: key.tab, menu: key.escape },
     simcity2000: { weapon: key.enter, menu: key.escape }
   });
+
+  const browserKeys = Object.freeze({
+    Backspace: key.backspace, Tab: key.tab, Enter: key.enter, NumpadEnter: key.enter,
+    Escape: key.escape, Space: key.space, ArrowUp: key.up, ArrowDown: key.down,
+    ArrowLeft: key.left, ArrowRight: key.right, ShiftLeft: key.shift, ShiftRight: key.shift,
+    ControlLeft: key.ctrl, ControlRight: key.ctrl, AltLeft: key.alt, AltRight: key.alt,
+    F1: 282, F2: 283, F3: 284, F4: 285, F5: 286, F6: 287,
+    F7: 288, F8: 289, F9: 290, F10: 291, F11: 292, F12: 293,
+    Home: 278, End: 279, PageUp: 280, PageDown: 281, Insert: 277, Delete: 127,
+    Minus: 45, Equal: 61, BracketLeft: 91, BracketRight: 93, Backslash: 92,
+    Semicolon: 59, Quote: 39, Backquote: 96, Comma: 44, Period: 46, Slash: 47
+  });
+
+  function browserKey(event) {
+    if (browserKeys[event.code] != null) return browserKeys[event.code];
+    if (/^Key[A-Z]$/.test(event.code)) return event.code.charCodeAt(3) + 32;
+    if (/^Digit[0-9]$/.test(event.code)) return event.code.charCodeAt(5);
+    return 0;
+  }
 
   async function sha256Hex(file) {
     const digest = await crypto.subtle.digest('SHA-256', await file.arrayBuffer());
@@ -120,6 +139,26 @@
     runtime.module?._DOSBox_WasmControllerKey?.(code, pressed ? 1 : 0);
   }
 
+  function releaseKeyboard() {
+    for (const code of runtime.keyboardHeld) nativeKey(code, false);
+    runtime.keyboardHeld.clear();
+  }
+
+  function keyboardEvent(event, pressed) {
+    const code = browserKey(event);
+    if (!code || !runtime.started || (pressed && event.repeat)) return;
+    if (pressed) {
+      if (runtime.keyboardHeld.has(code)) return;
+      runtime.keyboardHeld.add(code);
+    } else {
+      if (!runtime.keyboardHeld.has(code)) return;
+      runtime.keyboardHeld.delete(code);
+    }
+    nativeKey(code, pressed);
+    event.stopImmediatePropagation();
+    event.preventDefault();
+  }
+
   function releaseController() {
     for (const [code, pressed] of runtime.heldKeys) if (pressed) nativeKey(code, false);
     for (const [button, pressed] of runtime.heldButtons) {
@@ -186,6 +225,14 @@
     async init(context) {
       await loadManifest(context);
       context.elements.canvas.addEventListener('contextmenu', event => event.preventDefault());
+      // Explicitly queue browser key state into native DOSBox instead of
+      // depending on generated SDL DOM-listener ordering.
+      context.elements.canvas.addEventListener('keydown', event => keyboardEvent(event, true), true);
+      context.elements.canvas.addEventListener('keyup', event => keyboardEvent(event, false), true);
+      context.elements.canvas.addEventListener('blur', releaseKeyboard);
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') releaseKeyboard();
+      });
     },
 
     async start(context) {

@@ -3,8 +3,8 @@ set -euo pipefail
 
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 framework_dir="${WASM_FRAMEWORK_DIR:-$repo_dir/../wasm-game-framework}"
-required_version="0.9.2"
-required_commit="53bc7e6eeef1ae35dcf3b25dea4e3ec0ab46726f"
+required_version="0.9.4"
+required_commit="c4ad3b9e075f881d32f044299fbfeee703a9169d"
 running_container=''
 
 cleanup() {
@@ -22,11 +22,11 @@ smoke_image() {
   done
   curl -fsS "http://127.0.0.1:$port/wasm-game-config.js" | grep -Fq "WASM_GAME_VARIANT = \"$variant\""
   curl -fsS "http://127.0.0.1:$port/wasm-game.json" | jq -e --arg variant "$variant" '
-    .controller.mode == "wasdMouse" and
+    .controller.mode == "disabled" and
     .persistence.root == "/persistent/dosbox/{variant}" and
     (if $variant == "suite" then .variants | length == 9 else .variants[$variant] != null end)
   ' >/dev/null
-  curl -fsS "http://127.0.0.1:$port/service-worker.js" | grep -Fq 'wasm-game-shell-0.9.2'
+  curl -fsS "http://127.0.0.1:$port/service-worker.js" | grep -Fq 'wasm-game-shell-0.9.4'
   docker stop -t 1 "$running_container" >/dev/null
   running_container=''
 }

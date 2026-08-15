@@ -37,9 +37,11 @@ const forbiddenNormalCopy = /files?|data|cache|container|browser|mount|verif|dir
 assert.equal(config.identity, false);
 assert.equal(config.graphics, false);
 assert.equal(config.pointerLock, false);
+assert.equal(config.menuCursor, 'none');
+assert.equal(config.variants.simcity2000.menuCursor, 'native');
 assert.equal(config.fullscreen, true);
 assert.equal(config.displayMode, '4:3');
-assert.equal(config.controller.mode, 'wasdMouse');
+assert.equal(config.controller.mode, 'disabled');
 assert.equal(config.persistence.root, '/persistent/dosbox/{variant}');
 assert.doesNotMatch(config.description, forbiddenNormalCopy,
   'suite ready copy must stay game-focused');
@@ -80,13 +82,15 @@ async function exercise(variant) {
   let loadedPolicy;
   let moduleOptions;
   let dirtyCount = 0;
+  const canvasListeners = new Map();
+  const documentListeners = new Map();
   const persistenceRoot = `/persistent/dosbox/${variant}`;
   const gameRoot = `${persistenceRoot}/game`;
   const configRoot = `${persistenceRoot}/.dosbox`;
   const canvas = {
     width: 640,
     height: 400,
-    addEventListener() {},
+    addEventListener(type, listener) { canvasListeners.set(type, listener); },
     focus() { launches.push(['focus']); }
   };
   const nativeWrite = (stream, buffer) => {
@@ -111,6 +115,8 @@ async function exercise(variant) {
     _DOSBox_WasmCanvasHeight() { return 400; }
   };
   const document = {
+    visibilityState: 'visible',
+    addEventListener(type, listener) { documentListeners.set(type, listener); },
     createElement(type) { assert.equal(type, 'script'); return {}; },
     head: {
       appendChild(script) {
@@ -188,6 +194,14 @@ async function exercise(variant) {
   assert.doesNotMatch(loading.flat().join('\n'), forbiddenNormalCopy,
     'normal loading copy must remain title-focused');
   assert.equal(adapter.readEngineState(), 'gameplay');
+  const enterEvent = {
+    code: 'Enter', repeat: false,
+    stopImmediatePropagation() {}, preventDefault() {}
+  };
+  canvasListeners.get('keydown')(enterEvent);
+  canvasListeners.get('keyup')(enterEvent);
+  assert.deepEqual(nativeInput.slice(-2), [['key', 13, 1], ['key', 13, 0]],
+    `${variant} must explicitly queue browser Enter into native DOSBox`);
   assert.deepEqual(transitions, ['loading', 'gameplay']);
   const invocation = launches.find(call => call[0] === 'callMain');
   assert.ok(invocation);

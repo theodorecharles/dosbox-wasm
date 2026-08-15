@@ -12,17 +12,14 @@
   "fullscreen": true,
   "defaultFullscreen": false,
   "pointerLock": false,
+  "menuCursor": "none",
   "displayMode": "4:3",
   "canvasWidth": 960,
   "canvasHeight": 720,
   "pixelated": true,
   "syncBackbuffer": false,
   "controller": {
-    "mode": "wasdMouse",
-    "moveDeadzone": 0.18,
-    "lookDeadzone": 0.14,
-    "lookSensitivity": 1,
-    "label": "DOS keyboard and mouse mapping"
+    "mode": "disabled"
   },
   "persistence": {
     "root": "/persistent/dosbox/{variant}",
@@ -176,6 +173,7 @@
     },
     "simcity2000": {
       "title": "SimCity 2000",
+      "menuCursor": "native",
       "engine": "DOSBox 0.74-3",
       "description": "The revised 1993 DOS city builder configured for VESA graphics and Sound Blaster 16 audio.",
       "icon": "/assets/dosbox.ico",
