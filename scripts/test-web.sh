@@ -44,4 +44,4 @@ rg -q 'createDosBoxModule' "$repo_dir/web/dist/dosbox.js"
 
 WASM_FRAMEWORK_DIR="$framework_dir" "$repo_dir/scripts/test-static.sh"
 git -C "$repo_dir" diff --check
-printf 'DOSBox native build, framework 0.9.1, IDBFS, controller, audio/canvas, HTTP, and retail-data checks passed.\n'
+printf 'DOSBox native build, framework 0.9.2, IDBFS, controller, audio/canvas, HTTP, and retail-data checks passed.\n'

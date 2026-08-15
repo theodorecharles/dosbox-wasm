@@ -32,7 +32,7 @@ for _ in $(seq 1 100); do
 done
 
 curl -fsS "http://127.0.0.1:$port/" | grep -Fq '/shared-shell/wasm-game-framework.js'
-curl -fsS "http://127.0.0.1:$port/service-worker.js" | grep -Fq 'wasm-game-shell-0.9.1'
+curl -fsS "http://127.0.0.1:$port/service-worker.js" | grep -Fq 'wasm-game-shell-0.9.2'
 curl -fsS "http://127.0.0.1:$port/wasm-game.json" | jq -e '
   (.variants | keys) == ["duke1", "duke2", "gta", "jazz", "jill1", "jill2", "jill3", "nfs", "simcity2000"] and
   .controller.mode == "wasdMouse" and
@@ -49,4 +49,4 @@ done
 test "$(curl -sS -o /dev/null -w '%{http_code}' "http://127.0.0.1:$port/data/")" = 404
 test "$(curl -sS -o /dev/null -w '%{http_code}' "http://127.0.0.1:$port/local-data/")" = 404
 
-printf 'Verified framework 0.9.1 shell, nine variants, controller/persistence policy, PWA metadata, provisioning gates, and private /data boundary.\n'
+printf 'Verified framework 0.9.2 shell, nine variants, controller/persistence policy, PWA metadata, provisioning gates, and private /data boundary.\n'

@@ -67,21 +67,21 @@ data.
 ## Build
 
 Prerequisites are Emscripten, Autoconf/Automake, Node.js, WABT, ImageMagick,
-Docker, and an exact checkout of `wasm-game-framework` v0.9.1 at
-`68bfbd1dbc0104084c7760e486b7437d4c7bb90e`.
+Docker, and an exact checkout of `wasm-game-framework` v0.9.2 at
+`53bc7e6eeef1ae35dcf3b25dea4e3ec0ab46726f`.
 
 ```bash
 EMSDK_DIR=/path/to/emsdk \
-WASM_FRAMEWORK_DIR=/path/to/wasm-game-framework-v0.9.1 \
+WASM_FRAMEWORK_DIR=/path/to/wasm-game-framework-v0.9.2 \
 ./scripts/test-web.sh
 
 EMSDK_DIR=/path/to/emsdk \
-WASM_FRAMEWORK_DIR=/path/to/wasm-game-framework-v0.9.1 \
+WASM_FRAMEWORK_DIR=/path/to/wasm-game-framework-v0.9.2 \
 ./scripts/build-images.sh
 ```
 
 The image build produces the suite `dosbox-wasm:dev` plus the nine locked
-images listed above, all based on `wasm-game-framework:0.9.1`. See the runbook
+images listed above, all based on `wasm-game-framework:0.9.2`. See the runbook
 for container start, stop, update, data-volume, and optional-password commands.
 
 Never submit this browser port or its framework adaptations to the DOSBox

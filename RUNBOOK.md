@@ -77,8 +77,8 @@ WASM_FRAMEWORK_DIR=/home/ted/Development/wasm/wasm-game-framework \
 ./scripts/build-images.sh
 ```
 
-Both scripts require framework v0.9.1 at commit
-`68bfbd1dbc0104084c7760e486b7437d4c7bb90e`. The target uses the
+Both scripts require framework v0.9.2 at commit
+`53bc7e6eeef1ae35dcf3b25dea4e3ec0ab46726f`. The target uses the
 portable normal CPU core, SDL surface renderer and audio, bounded native
 timeslices, growing memory, and a modularized JavaScript factory. Asyncify runs
 only between completed DOSBox machine timeslices: unwinding from inside the
@@ -187,7 +187,7 @@ the explicit Chrome milestone above.
 
 ### Isolated Chrome evidence (2026-08-15)
 
-The exact final v0.9.1 suite image was served from an isolated local container
+The exact final v0.9.2 suite image was served from an isolated local container
 and port, without using a Game Lab or live service:
 
 - Jill of the Jungle Episode 1 remained responsive past the former null-call /
