@@ -8,8 +8,8 @@ dist_dir="$repo_dir/web/dist"
 emsdk_dir="${EMSDK_DIR:-/home/ted/emsdk}"
 framework_dir="${WASM_FRAMEWORK_DIR:-$repo_dir/../wasm-game-framework}"
 jobs="${JOBS:-$(getconf _NPROCESSORS_ONLN 2>/dev/null || printf '8')}"
-required_framework_version="0.7.6"
-required_framework_commit="e617f090deaa294dacd033afa52c09f811a3e690"
+required_framework_version="0.9.1"
+required_framework_commit="68bfbd1dbc0104084c7760e486b7437d4c7bb90e"
 
 if [[ ! -f "$emsdk_dir/emsdk_env.sh" ]]; then
   printf 'Emscripten SDK environment not found at %s\n' "$emsdk_dir" >&2
@@ -27,7 +27,7 @@ mkdir -p "$build_dir"
 
 cflags='-O2 -sUSE_SDL=1'
 cxxflags='-O2 -sUSE_SDL=1 -Wno-register -fexceptions'
-ldflags='-sUSE_SDL=1 -sMODULARIZE=1 -sEXPORT_NAME=createDosBoxModule -sALLOW_MEMORY_GROWTH=1 -sASYNCIFY=1 -sASYNCIFY_STACK_SIZE=131072 -sENVIRONMENT=web,worker,node -sEXIT_RUNTIME=0 -sDISABLE_EXCEPTION_CATCHING=0 -sEXPORTED_RUNTIME_METHODS=FS,callMain'
+ldflags='-sUSE_SDL=1 -sMODULARIZE=1 -sEXPORT_NAME=createDosBoxModule -sALLOW_MEMORY_GROWTH=1 -sASYNCIFY=1 -sASYNCIFY_STACK_SIZE=131072 -sENVIRONMENT=web,worker,node -sEXIT_RUNTIME=0 -sDISABLE_EXCEPTION_CATCHING=0 -sEXPORTED_RUNTIME_METHODS=FS,callMain,ccall -lidbfs.js'
 configure_ldflags='-sUSE_SDL=1 -sENVIRONMENT=web,worker,node'
 
 if [[ ! -f "$build_dir/Makefile" ]]; then

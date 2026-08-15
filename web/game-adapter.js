@@ -1,7 +1,29 @@
 (function () {
   'use strict';
 
-  const runtime = { module: null, manifest: null, started: false, state: 'launcher' };
+  const runtime = {
+    module: null, manifest: null, started: false, state: 'launcher',
+    heldKeys: new Map(), heldButtons: new Map(), mouseX: 0, mouseY: 0
+  };
+  const key = Object.freeze({
+    enter: 13, escape: 27, space: 32, tab: 9, z: 122, x: 120,
+    f6: 287, up: 273, down: 274, right: 275, left: 276,
+    shift: 304, ctrl: 306, alt: 308
+  });
+  const controllerMaps = Object.freeze({
+    jill1: { jump: key.shift, attack: key.alt, weapon: key.enter, menu: key.escape },
+    jill2: { jump: key.shift, attack: key.alt, weapon: key.enter, menu: key.escape },
+    jill3: { jump: key.shift, attack: key.alt, weapon: key.enter, menu: key.escape },
+    jazz: { jump: key.alt, attack: key.space, weapon: key.ctrl, sprint: key.shift, menu: key.escape },
+    duke1: { jump: key.ctrl, attack: key.alt, weapon: key.enter, menu: key.escape },
+    duke2: { jump: key.ctrl, attack: key.alt, weapon: key.enter, menu: key.escape },
+    gta: {
+      jump: key.space, attack: key.ctrl, weapon: key.enter,
+      previousWeapon: key.z, nextWeapon: key.x, scoreboard: key.tab, menu: key.f6
+    },
+    nfs: { jump: key.space, weapon: key.enter, scoreboard: key.tab, menu: key.escape },
+    simcity2000: { weapon: key.enter, menu: key.escape }
+  });
 
   async function sha256Hex(file) {
     const digest = await crypto.subtle.digest('SHA-256', await file.arrayBuffer());
@@ -73,6 +95,83 @@
     return runtime.module;
   }
 
+  function trackPersistentWrites(FS, root, persistence) {
+    if (runtime.persistenceTracked || typeof FS.write !== 'function') return;
+    runtime.persistenceTracked = true;
+    const originalWrite = FS.write.bind(FS);
+    FS.write = (stream, ...args) => {
+      const written = originalWrite(stream, ...args);
+      const path = String(stream?.path ||
+        (stream?.node && typeof FS.getPath === 'function' ? FS.getPath(stream.node) : ''));
+      if (path === root || path.startsWith(`${root}/`)) persistence.markDirty();
+      return written;
+    };
+  }
+
+  function makeDosDriveWritable(FS, root, manifest) {
+    for (const spec of manifest.files) {
+      const requested = String(spec.mountName || spec.name).replaceAll('\\', '/');
+      const relative = manifest.preservePaths === true ? requested : requested.split('/').at(-1);
+      FS.chmod(`${root}/${relative}`, 0o600);
+    }
+  }
+
+  function nativeKey(code, pressed) {
+    runtime.module?._DOSBox_WasmControllerKey?.(code, pressed ? 1 : 0);
+  }
+
+  function releaseController() {
+    for (const [code, pressed] of runtime.heldKeys) if (pressed) nativeKey(code, false);
+    for (const [button, pressed] of runtime.heldButtons) {
+      if (pressed) runtime.module?._DOSBox_WasmControllerButton?.(button, 0);
+    }
+    runtime.heldKeys.clear();
+    runtime.heldButtons.clear();
+    runtime.mouseX = 0;
+    runtime.mouseY = 0;
+  }
+
+  function setHeld(map, value, send) {
+    const wasDown = runtime.heldKeys.get(map) === true;
+    const isDown = wasDown ? value > 0.35 : value >= 0.55;
+    if (wasDown === isDown) return;
+    runtime.heldKeys.set(map, isDown);
+    send(map, isDown);
+  }
+
+  function controllerFrame(detail, context) {
+    if (!runtime.started || !detail?.actions) return;
+    const actions = detail.actions;
+    const desired = new Map([
+      [key.up, Number(actions.forward) || 0], [key.down, Number(actions.backward) || 0],
+      [key.left, Number(actions.left) || 0], [key.right, Number(actions.right) || 0]
+    ]);
+    for (const [action, code] of Object.entries(controllerMaps[context.variant])) {
+      desired.set(code, Math.max(desired.get(code) || 0, Number(actions[action]) || 0));
+    }
+    for (const code of new Set([...runtime.heldKeys.keys(), ...desired.keys()])) {
+      setHeld(code, desired.get(code) || 0, nativeKey);
+    }
+    if (context.variant !== 'simcity2000') return;
+    for (const [button, value] of [[0, Math.max(Number(actions.jump) || 0, Number(actions.attack) || 0)],
+      [1, Number(actions.altAttack) || 0]]) {
+      const wasDown = runtime.heldButtons.get(button) === true;
+      const isDown = wasDown ? value > 0.35 : value >= 0.55;
+      if (wasDown !== isDown) {
+        runtime.heldButtons.set(button, isDown);
+        runtime.module?._DOSBox_WasmControllerButton?.(button, isDown ? 1 : 0);
+      }
+    }
+    const deltaMs = Math.max(0, Math.min(100, Number(detail.deltaMs) || 16.667));
+    runtime.mouseX += (Number(actions.lookX) || 0) * deltaMs * 0.5;
+    runtime.mouseY += (Number(actions.lookY) || 0) * deltaMs * 0.5;
+    const dx = Math.trunc(runtime.mouseX);
+    const dy = Math.trunc(runtime.mouseY);
+    runtime.mouseX -= dx;
+    runtime.mouseY -= dy;
+    if (dx || dy) runtime.module?._DOSBox_WasmControllerMouse?.(dx, dy);
+  }
+
   function progress(context, detail) {
     const message = `Preparing ${context.config.title}…`;
     if (detail.phase === 'checking-cache') context.setLoading(message);
@@ -104,8 +203,12 @@
         context.setLoading(preparing, '', 55);
         const module = await loadEngine(context);
         context.setLoading(preparing, '', 72);
+        await context.persistence.attach(module.FS, { root: context.persistence.root });
+        trackPersistentWrites(module.FS, context.persistence.root, context.persistence);
+        module.ccall('DOSBox_WasmSetHome', null, ['string'], [context.persistence.root]);
+        const gameRoot = `${context.persistence.root}/game`;
         await context.framework.mountOwnerFiles(module, prepared, {
-          root: '/game',
+          root: gameRoot,
           mode: 'memfs',
           preservePaths: runtime.manifest.preservePaths === true,
           onProgress(detail) {
@@ -115,16 +218,26 @@
             }
           }
         });
-        module.FS.chdir('/game');
+        makeDosDriveWritable(module.FS, gameRoot, runtime.manifest);
+        module.FS.chdir(gameRoot);
         context.setLoading(`Starting ${context.config.title}…`, '', 98);
+        const commands = runtime.manifest.commands.map(command =>
+          command.replaceAll('/game', gameRoot));
         try {
           module.callMain([
             ...runtime.manifest.dosboxArguments,
-            ...runtime.manifest.commands.flatMap(command => ['-c', command])
+            '-userconf',
+            ...commands.flatMap(command => ['-c', command])
           ]);
         } catch (error) {
           if (error !== 'unwind') throw error;
         }
+        const width = module._DOSBox_WasmCanvasWidth?.() || context.elements.canvas.width;
+        const height = module._DOSBox_WasmCanvasHeight?.() || context.elements.canvas.height;
+        if (width <= 0 || height <= 0) throw new Error('DOSBox did not create a drawable video surface.');
+        setTimeout(() => context.log(`[DOSBox] Browser loop diagnostics: ` +
+          `${module._DOSBox_WasmMachineSlices?.() || 0} machine slices, ` +
+          `${module._DOSBox_WasmAudioCallbacks?.() || 0} audio callbacks.`), 1000);
         runtime.state = 'gameplay';
         context.showRuntime('gameplay');
         context.elements.canvas.focus();
@@ -135,6 +248,10 @@
       }
     },
 
-    readEngineState() { return runtime.state; }
+    readEngineState() { return runtime.state; },
+    controllerFrame(detail, context) { controllerFrame(detail, context); },
+    controllerChanged(detail) {
+      if (!detail?.connected || detail.selection === 'disabled' || detail.activeIndex == null) releaseController();
+    }
   });
 })();

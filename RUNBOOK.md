@@ -77,12 +77,47 @@ WASM_FRAMEWORK_DIR=/home/ted/Development/wasm/wasm-game-framework \
 ./scripts/build-images.sh
 ```
 
-Both scripts require framework v0.7.6 at commit
-`e617f090deaa294dacd033afa52c09f811a3e690`. The target uses the
-portable normal CPU core, SDL surface renderer and audio, Asyncify-backed
-browser yielding, growing memory, and a modularized JavaScript factory.
+Both scripts require framework v0.9.1 at commit
+`68bfbd1dbc0104084c7760e486b7437d4c7bb90e`. The target uses the
+portable normal CPU core, SDL surface renderer and audio, bounded native
+timeslices, growing memory, and a modularized JavaScript factory. Asyncify runs
+only between completed DOSBox machine timeslices: unwinding from inside the
+unbounded CPU loop restored indirect callback locals incorrectly and caused the
+observed SDL audio-queue function-table crash.
 Physical CD-ROM, dynamic CPU recompilation, OpenGL output, SDL_net, and MIDI
 backends remain disabled.
+
+## Persistence and controller map
+
+Framework persistence is enabled for all nine variants. Each resolved root is
+unique and is attached before native main:
+
+- root: `/persistent/dosbox/<variant>`;
+- DOSBox configuration: `/persistent/dosbox/<variant>/.dosbox`;
+- mutable saves/settings beside the game: `/persistent/dosbox/<variant>/game`.
+
+The adapter marks the framework manager dirty on native writes below that root;
+after exact validation/mounting it makes the private DOS drive owner-writable,
+because titles such as Duke Nukem II require write-open access to an original
+resource even before they create a save. Original server copies remain exact.
+The framework owns the initial IDBFS restore and all serialized durability and
+lifecycle flushes. A hard-refresh acceptance pass must change both a DOSBox
+configuration value and title-specific save/setting, then verify both are read
+before the next native main reaches gameplay.
+
+Controller frames enter a native DOSBox queue; no synthetic DOM input is used.
+The common left-stick directions are the arrow keys. Per-title actions are:
+
+| Variant | Controller actions mapped to original DOS input |
+| --- | --- |
+| Jill 1/2/3 | A: Shift (jump), RT: Alt (attack), Y: Enter, Menu: Escape |
+| Jazz Jackrabbit | A: Alt, RT: Space, Y: Ctrl, LB: Shift, Menu: Escape |
+| Duke Nukem 1/2 | A: Ctrl, RT: Alt, Y: Enter, Menu: Escape |
+| GTA DOS demo | A: Space, RT: Ctrl, Y: Enter, LB/RB: Z/X, View: Tab, Menu: F6 |
+| The Need for Speed | A: Space, Y: Enter, View: Tab, Menu: Escape |
+| SimCity 2000 | right stick: mouse, A/RT: left click, LT: right click, Y: Enter, Menu: Escape |
+
+Hot-unplug and disabled selection release all held keys and mouse buttons.
 
 ## Container lifecycle
 
@@ -131,16 +166,46 @@ the password is not written into manifests, browser scripts, URLs, or logs.
 
 ## Runtime milestone
 
-All titles remain **Still in development** until a browser runtime pass verifies:
+All titles remain **Still in development** until a Chrome runtime pass verifies:
 
 1. suite selection and locked-image PWA identity for every variant;
 2. first-time provisioning and later IndexedDB restoration;
 3. nested directory reconstruction for GTA, NFS, and SimCity 2000;
 4. each configured DOS command reaches its title/menu and playable state;
-5. WASD/arrows, game action keys, audio-after-Play, and fullscreen preference;
+5. WASD/arrows, the controller mapping above (including hot-unplug),
+   audio-after-Play, and fullscreen preference;
 6. password-disabled and password-enabled launcher behavior;
 7. no direct `/data` or `/local-data` route under fresh or cached launches.
 
-Native DOSBox smoke tests reached the executable for all prepared titles; NFS
-reached its car intro and SimCity 2000 reached its intro with the curated data.
-That evidence does not replace the browser milestone.
+The automated native-Wasm regression runs an infinite DOS program through the
+production SDL loop, checks the 640x400 surface, queues multiple audio buffers,
+and injects native keyboard/mouse controller events without a trap. Static and
+HTTP tests cover all nine isolated persistence roots and mapping families.
+Native DOSBox smoke tests previously reached every prepared executable; NFS
+reached its car intro and SimCity 2000 reached its intro. None of that replaces
+the explicit Chrome milestone above.
+
+### Isolated Chrome evidence (2026-08-15)
+
+The exact final v0.9.1 suite image was served from an isolated local container
+and port, without using a Game Lab or live service:
+
+- Jill of the Jungle Episode 1 remained responsive past the former null-call /
+  function-table failure. Chrome showed `Program: JILL`, the Sound Blaster
+  prompt, a visible 640x400 native surface (1075x806 CSS client area), 216
+  completed machine slices, and 49 SDL audio callbacks with no console warning
+  or error. Its configuration loaded from
+  `/persistent/dosbox/jill1/.dosbox/dosbox-0.74-3.conf` after an image/container
+  restart.
+- Duke Nukem II reached the visible Apogee/Duke II screen with 209 completed
+  machine slices and 49 SDL audio callbacks, with no console warning or error.
+  This also verifies the owner-writable private drive needed for its
+  `nukem2.cmp` write-open.
+
+The crash/canvas repair needs no further reproduction-specific Chrome work.
+The broader nine-title release milestone still needs the other seven titles,
+an actual save plus changed configuration surviving hard refresh, physical
+controller connect/hot-unplug behavior across the mapping families, audible
+audio/focus-resume, fullscreen/PWA identity, and password-enabled launcher
+coverage. The isolated container was removed, its temporary owner content was
+deleted, and every Chrome tab used for the pass was finalized.

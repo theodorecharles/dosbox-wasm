@@ -25,12 +25,25 @@ honestly as the original eight-bit-color DOS demo.
 The repository contains no custom HTML, CSS, service worker, or web manifest.
 `wasm-game-framework` supplies the launcher, suite selector, installable PWA,
 optional password gate, fullscreen preference, responsive 4:3 canvas,
-provisioning flow, and private IndexedDB cache. The adapter selects the title,
-validates and mounts its files, and starts DOSBox with that title's commands.
+provisioning flow, controller selection, and private IndexedDB services. The
+adapter selects the title, restores its writable state, validates and mounts
+its program, and starts DOSBox with that title's commands.
 
 WASD maps to the original arrow-key movement in the Emscripten platform seam;
-arrow keys continue to work. Rendering keeps the original pixel-oriented DOS
-presentation in a contained 4:3 viewport.
+arrow keys continue to work. Native controller events use the same DOSBox
+keyboard/mouse path: the left stick moves, face/shoulder buttons map to each
+game's original action keys, and SimCity 2000 uses the right stick plus
+triggers as its mouse. Disconnecting a controller releases every held input.
+Rendering keeps the original pixel-oriented DOS presentation in a contained
+4:3 viewport.
+
+Each variant has its own IDBFS mount at `/persistent/dosbox/<variant>`. DOSBox
+uses that mount as `HOME`, so its generated configuration is restored from
+`/persistent/dosbox/<variant>/.dosbox`; the private DOS drive (including games
+that require write-open access to original resources) and mutable game state is
+restored beneath `/persistent/dosbox/<variant>/game`. The framework attaches
+and restores the mount before DOSBox main, then handles dirty, periodic,
+page-lifecycle, and durability flushes.
 
 ## Game data
 
@@ -54,21 +67,21 @@ data.
 ## Build
 
 Prerequisites are Emscripten, Autoconf/Automake, Node.js, WABT, ImageMagick,
-Docker, and an exact checkout of `wasm-game-framework` v0.7.6 at
-`e617f090deaa294dacd033afa52c09f811a3e690`.
+Docker, and an exact checkout of `wasm-game-framework` v0.9.1 at
+`68bfbd1dbc0104084c7760e486b7437d4c7bb90e`.
 
 ```bash
 EMSDK_DIR=/path/to/emsdk \
-WASM_FRAMEWORK_DIR=/path/to/wasm-game-framework-v0.7.6 \
+WASM_FRAMEWORK_DIR=/path/to/wasm-game-framework-v0.9.1 \
 ./scripts/test-web.sh
 
 EMSDK_DIR=/path/to/emsdk \
-WASM_FRAMEWORK_DIR=/path/to/wasm-game-framework-v0.7.6 \
+WASM_FRAMEWORK_DIR=/path/to/wasm-game-framework-v0.9.1 \
 ./scripts/build-images.sh
 ```
 
 The image build produces the suite `dosbox-wasm:dev` plus the nine locked
-images listed above, all based on `wasm-game-framework:0.7.6`. See the runbook
+images listed above, all based on `wasm-game-framework:0.9.1`. See the runbook
 for container start, stop, update, data-volume, and optional-password commands.
 
 Never submit this browser port or its framework adaptations to the DOSBox

@@ -17,6 +17,19 @@
   "canvasHeight": 720,
   "pixelated": true,
   "syncBackbuffer": false,
+  "controller": {
+    "mode": "wasdMouse",
+    "moveDeadzone": 0.18,
+    "lookDeadzone": 0.14,
+    "lookSensitivity": 1,
+    "label": "DOS keyboard and mouse mapping"
+  },
+  "persistence": {
+    "root": "/persistent/dosbox/{variant}",
+    "debounceMs": 750,
+    "intervalMs": 5000,
+    "requestDurability": true
+  },
   "theme": {
     "accent": "#1d4e99",
     "accent-strong": "#f4cc45",

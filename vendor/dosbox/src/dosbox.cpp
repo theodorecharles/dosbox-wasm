@@ -22,6 +22,9 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
+#if defined(__EMSCRIPTEN__)
+#include <emscripten.h>
+#endif
 #include <unistd.h>
 #include "dosbox.h"
 #include "debug.h"
@@ -115,6 +118,9 @@ void SHELL_Init(void);
 void INT10_Init(Section*);
 
 static LoopHandler * loop;
+#if defined(__EMSCRIPTEN__)
+static Bit32u wasm_machine_slices = 0;
+#endif
 
 bool SDLNetInited;
 
@@ -151,7 +157,12 @@ static Bitu Normal_Loop(void) {
 }
 
 //For trying other delays
+#if defined(__EMSCRIPTEN__)
+/* Browser yielding happens after this complete native timeslice returns. */
+#define wrap_delay(a) ((void)(a))
+#else
 #define wrap_delay(a) SDL_Delay(a)
+#endif
 
 void increaseticks() { //Make it return ticksRemain and set it in the function above to remove the global variable.
 	if (GCC_UNLIKELY(ticksLocked)) { // For Fast Forward Mode
@@ -314,8 +325,23 @@ void DOSBOX_RunMachine(void){
 	Bitu ret;
 	do {
 		ret=(*loop)();
+#if defined(__EMSCRIPTEN__)
+		/* Never Asyncify the unbounded Normal_Loop itself: doing so restores
+		 * indirect CPU/callback locals incorrectly and poisons SDL's later audio
+		 * table call. Yield only here, between completed native timeslices. */
+		if (!ret) {
+			wasm_machine_slices++;
+			emscripten_sleep(1);
+		}
+#endif
 	} while (!ret);
 }
+
+#if defined(__EMSCRIPTEN__)
+extern "C" EMSCRIPTEN_KEEPALIVE Bit32u DOSBox_WasmMachineSlices(void) {
+	return wasm_machine_slices;
+}
+#endif
 
 static void DOSBOX_UnlockSpeed( bool pressed ) {
 	static bool autoadjust = false;

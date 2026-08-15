@@ -8,8 +8,10 @@
 - Upstream submission: prohibited for this downstream browser adaptation
 
 The Emscripten changes are intentionally local and guarded by
-`__EMSCRIPTEN__`: SDL compatibility, inert physical-CD access, cooperative
-event handling, and the portfolio's default WASD mapping. Autotools generated
+`__EMSCRIPTEN__`: SDL compatibility, inert physical-CD access, safe yielding
+between native CPU timeslices, deterministic SDL audio underrun output, native
+queued controller input, runtime diagnostics, and the portfolio's default WASD
+mapping. Autotools generated
 files were refreshed with `autoreconf -fi` after changing `configure.ac`; that
 is why generated `configure`, `Makefile.in`, and helper files differ from the
 release archive as well.

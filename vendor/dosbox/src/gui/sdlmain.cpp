@@ -39,6 +39,7 @@
 #define SDL_INIT_CDROM 0
 #endif
 #if defined(__EMSCRIPTEN__)
+#include <emscripten.h>
 /* Browser builds use the SDL surface output. The SDL compatibility library
  * does not provide removed 1.2 YUV overlays or blocking event waits. */
 extern "C" SDL_Overlay* SDL_CreateYUVOverlay(int, int, Uint32, SDL_Surface*) { return 0; }
@@ -63,6 +64,56 @@ extern "C" int SDL_WaitEvent(SDL_Event* event) { return SDL_PollEvent(event); }
 #include "cpu.h"
 #include "cross.h"
 #include "control.h"
+
+void MAPPER_CheckEvent(SDL_Event * event);
+
+#if defined(__EMSCRIPTEN__)
+enum WasmControllerEventType {
+	WASM_CONTROLLER_KEY,
+	WASM_CONTROLLER_MOUSE,
+	WASM_CONTROLLER_BUTTON
+};
+struct WasmControllerEvent {
+	WasmControllerEventType type;
+	int value1;
+	int value2;
+};
+static WasmControllerEvent wasm_controller_events[128];
+static unsigned int wasm_controller_read = 0;
+static unsigned int wasm_controller_write = 0;
+
+static void QueueWasmControllerEvent(WasmControllerEventType type, int value1, int value2) {
+	const unsigned int next = (wasm_controller_write + 1) % 128;
+	if (next == wasm_controller_read)
+		wasm_controller_read = (wasm_controller_read + 1) % 128;
+	wasm_controller_events[wasm_controller_write].type = type;
+	wasm_controller_events[wasm_controller_write].value1 = value1;
+	wasm_controller_events[wasm_controller_write].value2 = value2;
+	wasm_controller_write = next;
+}
+
+static void DispatchWasmControllerEvents(void) {
+	while (wasm_controller_read != wasm_controller_write) {
+		const WasmControllerEvent event = wasm_controller_events[wasm_controller_read];
+		wasm_controller_read = (wasm_controller_read + 1) % 128;
+		if (event.type == WASM_CONTROLLER_KEY) {
+			SDL_Event key_event;
+			memset(&key_event, 0, sizeof(key_event));
+			key_event.type = event.value2 ? SDL_KEYDOWN : SDL_KEYUP;
+			key_event.key.type = key_event.type;
+			key_event.key.state = event.value2 ? SDL_PRESSED : SDL_RELEASED;
+			key_event.key.keysym.sym = (SDLKey)event.value1;
+			MAPPER_CheckEvent(&key_event);
+		} else if (event.type == WASM_CONTROLLER_MOUSE) {
+			Mouse_CursorMoved((float)event.value1, (float)event.value2, 0.0f, 0.0f, true);
+		} else if (event.value2) {
+			Mouse_ButtonPressed((Bit8u)event.value1);
+		} else {
+			Mouse_ButtonReleased((Bit8u)event.value1);
+		}
+	}
+}
+#endif
 
 #define MAPPERFILE "mapper-" VERSION ".map"
 //#define DISABLE_JOYSTICK
@@ -1453,6 +1504,9 @@ void GFX_LosingFocus(void) {
 #endif
 
 void GFX_Events() {
+#if defined(__EMSCRIPTEN__)
+	DispatchWasmControllerEvents();
+#endif
 	//Don't poll too often. This can be heavy on the OS, especially Macs.
 	//In idle mode 3000-4000 polls are done per second without this check.
 	//Macs, with this code,  max 250 polls per second. (non-macs unused default max 500)
@@ -1615,11 +1669,37 @@ void GFX_Events() {
 			} 
 #endif
 		default:
-			void MAPPER_CheckEvent(SDL_Event * event);
 			MAPPER_CheckEvent(&event);
 		}
 	}
 }
+
+#if defined(__EMSCRIPTEN__)
+extern "C" EMSCRIPTEN_KEEPALIVE void DOSBox_WasmControllerKey(int key, int pressed) {
+	QueueWasmControllerEvent(WASM_CONTROLLER_KEY, key, pressed ? 1 : 0);
+}
+
+extern "C" EMSCRIPTEN_KEEPALIVE void DOSBox_WasmControllerMouse(int xrel, int yrel) {
+	if (xrel || yrel) QueueWasmControllerEvent(WASM_CONTROLLER_MOUSE, xrel, yrel);
+}
+
+extern "C" EMSCRIPTEN_KEEPALIVE void DOSBox_WasmControllerButton(int button, int pressed) {
+	if (button < 0 || button > 2) return;
+	QueueWasmControllerEvent(WASM_CONTROLLER_BUTTON, button, pressed ? 1 : 0);
+}
+
+extern "C" EMSCRIPTEN_KEEPALIVE void DOSBox_WasmSetHome(const char *home) {
+	if (home && home[0] == '/') setenv("HOME", home, 1);
+}
+
+extern "C" EMSCRIPTEN_KEEPALIVE int DOSBox_WasmCanvasWidth(void) {
+	return sdl.surface ? sdl.surface->w : 0;
+}
+
+extern "C" EMSCRIPTEN_KEEPALIVE int DOSBox_WasmCanvasHeight(void) {
+	return sdl.surface ? sdl.surface->h : 0;
+}
+#endif
 
 #if defined (WIN32)
 static BOOL WINAPI ConsoleEventHandler(DWORD event) {

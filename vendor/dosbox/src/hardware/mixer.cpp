@@ -44,6 +44,9 @@
 #include "timer.h"
 #include "setup.h"
 #include "cross.h"
+#if defined(__EMSCRIPTEN__)
+#include <emscripten.h>
+#endif
 #include "support.h"
 #include "mapper.h"
 #include "hardware.h"
@@ -411,7 +414,18 @@ static void MIXER_Mix_NoSound(void) {
 	mixer.done=0;
 }
 
+#if defined(__EMSCRIPTEN__)
+static Bit32u wasm_audio_callbacks = 0;
+static Bit32u wasm_audio_nonzero_callbacks = 0;
+#endif
+
 static void SDLCALL MIXER_CallBack(void * userdata, Uint8 *stream, int len) {
+	/* SDL's browser audio queue is fed while the main DOSBox stack is asleep.
+	 * Always publish deterministic silence when the emulated mixer underruns. */
+	memset(stream, 0, (size_t)len);
+#if defined(__EMSCRIPTEN__)
+	wasm_audio_callbacks++;
+#endif
 	Bitu need=(Bitu)len/MIXER_SSIZE;
 	Bit16s * output=(Bit16s *)stream;
 	Bitu reduce;
@@ -514,7 +528,25 @@ static void SDLCALL MIXER_CallBack(void * userdata, Uint8 *stream, int len) {
 			pos++;
 		}
 	}
+#if defined(__EMSCRIPTEN__)
+	for (int i = 0; i < len; i++) {
+		if (stream[i]) {
+			wasm_audio_nonzero_callbacks++;
+			break;
+		}
+	}
+#endif
 }
+
+#if defined(__EMSCRIPTEN__)
+extern "C" EMSCRIPTEN_KEEPALIVE Bit32u DOSBox_WasmAudioCallbacks(void) {
+	return wasm_audio_callbacks;
+}
+
+extern "C" EMSCRIPTEN_KEEPALIVE Bit32u DOSBox_WasmAudioNonzeroCallbacks(void) {
+	return wasm_audio_nonzero_callbacks;
+}
+#endif
 
 static void MIXER_Stop(Section* sec) {
 }

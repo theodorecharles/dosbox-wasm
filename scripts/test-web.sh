@@ -12,9 +12,12 @@ node --check "$repo_dir/web/dist/dosbox.js"
 node --check "$repo_dir/web/dist/game-adapter.js"
 node "$repo_dir/scripts/test-adapter.js" "$repo_dir/web/dist"
 node "$repo_dir/scripts/test-data-manifest.js" "$repo_dir/web/dist"
+node "$repo_dir/scripts/test-native-runtime.js" "$repo_dir/web/dist"
 wasm-validate "$repo_dir/web/dist/dosbox.wasm"
 jq -e '.variants | keys == ["duke1", "duke2", "gta", "jazz", "jill1", "jill2", "jill3", "nfs", "simcity2000"]' "$repo_dir/web/dist/wasm-game.json" >/dev/null
 jq -e '.variants | {jill1: (.jill1.files | length), jill2: (.jill2.files | length), jill3: (.jill3.files | length), jazz: (.jazz.files | length), duke1: (.duke1.files | length), duke2: (.duke2.files | length), gta: (.gta.files | length), nfs: (.nfs.files | length), simcity2000: (.simcity2000.files | length)} == {jill1: 28, jill2: 27, jill3: 34, jazz: 66, duke1: 55, duke2: 7, gta: 89, nfs: 360, simcity2000: 30}' "$repo_dir/web/dist/wasm-game-data.json" >/dev/null
+jq -e '.controller.mode == "wasdMouse" and .persistence.root == "/persistent/dosbox/{variant}"' \
+  "$repo_dir/web/dist/wasm-game.json" >/dev/null
 
 for forbidden in index.html service-worker.js manifest.webmanifest wasm-game-framework.js wasm-game-framework.css; do
   test ! -e "$repo_dir/web/$forbidden"
@@ -32,9 +35,13 @@ if find "$repo_dir/web/dist" -type f | grep -Ei "$proprietary_pattern"; then
   exit 1
 fi
 rg -q 'case SDLK_w: event.key.keysym.sym = SDLK_UP' "$repo_dir/vendor/dosbox/src/gui/sdlmain.cpp"
+rg -Fq 'emscripten_sleep(1)' "$repo_dir/vendor/dosbox/src/dosbox.cpp"
+rg -q 'QueueWasmControllerEvent' "$repo_dir/vendor/dosbox/src/gui/sdlmain.cpp"
+rg -q 'DOSBox_WasmAudioCallbacks' "$repo_dir/vendor/dosbox/src/hardware/mixer.cpp"
 rg -q 'sASYNCIFY=1' "$repo_dir/scripts/build-web.sh"
+rg -q 'IDBFS' "$repo_dir/web/dist/dosbox.js"
 rg -q 'createDosBoxModule' "$repo_dir/web/dist/dosbox.js"
 
 WASM_FRAMEWORK_DIR="$framework_dir" "$repo_dir/scripts/test-static.sh"
 git -C "$repo_dir" diff --check
-printf 'DOSBox native build, framework contract, WASD seam, and retail-data boundary checks passed.\n'
+printf 'DOSBox native build, framework 0.9.1, IDBFS, controller, audio/canvas, HTTP, and retail-data checks passed.\n'

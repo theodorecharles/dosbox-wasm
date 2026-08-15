@@ -6,6 +6,7 @@
   "scripts": {
     "build": "./scripts/build-web.sh",
     "manifest:data": "node scripts/generate-data-manifest.js",
+    "test:native": "node scripts/test-native-runtime.js web/dist",
     "test": "./scripts/test-web.sh"
   }
 }
