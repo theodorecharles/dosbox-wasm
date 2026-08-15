@@ -2,11 +2,10 @@
   "name": "dosbox-wasm",
   "version": "0.1.0",
   "private": true,
-  "description": "Native DOSBox browser family for Jill of the Jungle",
+  "description": "Native DOSBox browser suite for classic DOS games",
   "scripts": {
     "build": "./scripts/build-web.sh",
     "manifest:data": "node scripts/generate-data-manifest.js",
     "test": "./scripts/test-web.sh"
   }
 }
-

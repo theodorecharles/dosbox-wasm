@@ -11,9 +11,10 @@ WASM_FRAMEWORK_DIR="$framework_dir" \
 node --check "$repo_dir/web/dist/dosbox.js"
 node --check "$repo_dir/web/dist/game-adapter.js"
 node "$repo_dir/scripts/test-adapter.js" "$repo_dir/web/dist"
+node "$repo_dir/scripts/test-data-manifest.js" "$repo_dir/web/dist"
 wasm-validate "$repo_dir/web/dist/dosbox.wasm"
-jq -e '.variants | keys == ["jill1", "jill2", "jill3"]' "$repo_dir/web/dist/wasm-game.json" >/dev/null
-jq -e '[.variants[].files | length] == [28, 27, 34]' "$repo_dir/web/dist/wasm-game-data.json" >/dev/null
+jq -e '.variants | keys == ["duke1", "duke2", "gta", "jazz", "jill1", "jill2", "jill3", "nfs", "simcity2000"]' "$repo_dir/web/dist/wasm-game.json" >/dev/null
+jq -e '.variants | {jill1: (.jill1.files | length), jill2: (.jill2.files | length), jill3: (.jill3.files | length), jazz: (.jazz.files | length), duke1: (.duke1.files | length), duke2: (.duke2.files | length), gta: (.gta.files | length), nfs: (.nfs.files | length), simcity2000: (.simcity2000.files | length)} == {jill1: 28, jill2: 27, jill3: 34, jazz: 66, duke1: 55, duke2: 7, gta: 89, nfs: 360, simcity2000: 30}' "$repo_dir/web/dist/wasm-game-data.json" >/dev/null
 
 for forbidden in index.html service-worker.js manifest.webmanifest wasm-game-framework.js wasm-game-framework.css; do
   test ! -e "$repo_dir/web/$forbidden"
@@ -21,12 +22,13 @@ done
 cmp "$framework_dir/dist/wasm-game-framework.js" "$repo_dir/web/dist/shared-shell/wasm-game-framework.js"
 cmp "$framework_dir/dist/wasm-game-bootstrap.js" "$repo_dir/web/dist/shared-shell/wasm-game-bootstrap.js"
 
-if git -C "$repo_dir" ls-files | grep -Ei '\.(jn[123]|sha|vcl|ddt|dma|dem|mac|epc)$|(^|/)JILL[123]?\.EXE$'; then
-  printf 'A proprietary Jill game file is tracked.\n' >&2
+proprietary_pattern='\.(jn[123]|sha|vcl|ddt|dma|dem|mac|epc|0sc|0fn|mus|int|dn1|cmp|f[1-5]|rat|fon|fxt|gry|raw|sdt|qfs|inv|fsh|tgv|asf|cfm|pdn|pbs|fmm|rpl|sc2|scn|bnk)$|(^|/)(JILL[123]?|JAZZ|DN1|NUKEM2|TNFS|SC2000)\.EXE$|(^|/)GTA\.BAT$'
+if git -C "$repo_dir" ls-files | grep -Ei "$proprietary_pattern"; then
+  printf 'A proprietary DOS game file is tracked.\n' >&2
   exit 1
 fi
-if find "$repo_dir/web/dist" -type f | grep -Ei '\.(jn[123]|sha|vcl|ddt|dma|dem|mac|epc)$|/JILL[123]?\.EXE$'; then
-  printf 'A proprietary Jill game file entered the web build.\n' >&2
+if find "$repo_dir/web/dist" -type f | grep -Ei "$proprietary_pattern"; then
+  printf 'A proprietary DOS game file entered the web build.\n' >&2
   exit 1
 fi
 rg -q 'case SDLK_w: event.key.keysym.sym = SDLK_UP' "$repo_dir/vendor/dosbox/src/gui/sdlmain.cpp"

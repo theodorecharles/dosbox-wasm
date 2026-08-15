@@ -1,61 +1,74 @@
 # DOSBox WASM
 
-Native DOSBox in WebAssembly, packaged with `wasm-game-framework` as a reusable
-browser home for DOS games. The first family is the complete Jill of the Jungle
-trilogy. This port is built from the official DOSBox 0.74-3 source release; it
-does not use an existing third-party DOSBox WebAssembly port.
+Native DOSBox 0.74-3 in WebAssembly, packaged with `wasm-game-framework` as a
+reusable browser home for classic DOS games. It is built from the official
+DOSBox source release and does not use a third-party DOSBox WebAssembly port.
 
 | Game | Status | Image |
 | --- | --- | --- |
 | Jill of the Jungle | **Still in development** | `jill1-wasm` |
 | Jill Goes Underground | **Still in development** | `jill2-wasm` |
 | Jill Saves the Prince | **Still in development** | `jill3-wasm` |
+| Jazz Jackrabbit | **Still in development** | `jazz-wasm` |
+| Duke Nukem | **Still in development** | `duke1-wasm` |
+| Duke Nukem II | **Still in development** | `duke2-wasm` |
+| Grand Theft Auto (DOS demo) | **Still in development** | `gta1-wasm` |
+| The Need for Speed | **Still in development** | `nfs1-wasm` |
+| SimCity 2000 | **Still in development** | `simcity2000-wasm` |
 
-## What the framework provides
+GTA 2, SimCity 3000, and Windows Need for Speed releases are intentionally out
+of scope: they are not DOS titles. The available GTA folder is identified
+honestly as the original eight-bit-color DOS demo.
+
+## Framework and controls
 
 The repository contains no custom HTML, CSS, service worker, or web manifest.
 `wasm-game-framework` supplies the launcher, suite selector, installable PWA,
-fullscreen preference, responsive 4:3 canvas, provisioning flow, and private
-IndexedDB cache. The game adapter only selects the episode, validates and
-mounts its files, and starts the native engine.
+optional password gate, fullscreen preference, responsive 4:3 canvas,
+provisioning flow, and private IndexedDB cache. The adapter selects the title,
+validates and mounts its files, and starts DOSBox with that title's commands.
 
-WASD is mapped to the original arrow-key movement in the Emscripten platform
-seam. Arrow keys continue to work. Rendering uses the original pixel-oriented
-DOS presentation in a contained 4:3 viewport; the browser never stretches it.
+WASD maps to the original arrow-key movement in the Emscripten platform seam;
+arrow keys continue to work. Rendering keeps the original pixel-oriented DOS
+presentation in a contained 4:3 viewport.
 
 ## Game data
 
-No Jill executable or content file is committed or included in an image. On a
-fresh deployment, open the site and provision the episode folder
-once. The container validates all files by exact name, byte length, and SHA-256
-and stores them beneath its persistent `/data` volume:
+No game executable or content file is committed or included in an image. On a
+fresh deployment, choose a title and provision its prepared folder once. Every
+file is checked by exact name, byte length, and SHA-256 before it is stored in
+the persistent `/data/<variant>` directory. The browser retains a validated,
+private IndexedDB copy for later launches. Neither `/data` nor `/local-data` is
+an HTTP route.
 
-- `/data/jill1` for episode 1;
-- `/data/jill2` for episode 2;
-- `/data/jill3` for episode 3.
+The expected prepared folder names are `JILL`, `JILL2`, `JILL3`, `JAZZ`,
+`DUKE1`, `DUKE2`, `GTA`, `NFS`, and `SC2000`. NFS and SimCity 2000 require the
+specific archive preparation documented in [RUNBOOK.md](RUNBOOK.md). Nested
+game paths are retained for GTA, NFS, and SimCity 2000.
 
-Once the selected episode is ready, the upload controls disappear. The browser
-also retains a validated private IndexedDB copy so later launches avoid another
-download from the container. `/data` itself is never exposed as an HTTP route.
+The installed sources did not include a standalone game icon that could safely
+be redistributed outside the owner-data boundary. All variants therefore use
+the generic DOSBox icon; assets such as GTA's `GTA.PCX` remain private game
+data.
 
 ## Build
 
 Prerequisites are Emscripten, Autoconf/Automake, Node.js, WABT, ImageMagick,
-Docker, and an exact checkout of `wasm-game-framework` v0.7.5 at `11b9af4`.
+Docker, and an exact checkout of `wasm-game-framework` v0.7.6 at `e617f09`.
 
 ```bash
 EMSDK_DIR=/path/to/emsdk \
-WASM_FRAMEWORK_DIR=/path/to/wasm-game-framework-v0.7.5 \
+WASM_FRAMEWORK_DIR=/path/to/wasm-game-framework-v0.7.6 \
 ./scripts/test-web.sh
 
 EMSDK_DIR=/path/to/emsdk \
-WASM_FRAMEWORK_DIR=/path/to/wasm-game-framework-v0.7.5 \
+WASM_FRAMEWORK_DIR=/path/to/wasm-game-framework-v0.7.6 \
 ./scripts/build-images.sh
 ```
 
-The second command produces a suite image and three independently branded
-images: `dosbox-wasm:dev`, `jill1-wasm:dev`, `jill2-wasm:dev`, and
-`jill3-wasm:dev`.
+The image build produces the suite `dosbox-wasm:dev` plus the nine locked
+images listed above, all based on `wasm-game-framework:0.7.6`. See the runbook
+for container start, stop, update, data-volume, and optional-password commands.
 
 Never submit this browser port or its framework adaptations to the DOSBox
 upstream project.
