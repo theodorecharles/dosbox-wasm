@@ -13,6 +13,12 @@ node --check "$repo_dir/web/dist/game-adapter.js"
 node "$repo_dir/scripts/test-adapter.js" "$repo_dir/web/dist"
 node "$repo_dir/scripts/test-data-manifest.js" "$repo_dir/web/dist"
 node "$repo_dir/scripts/test-native-runtime.js" "$repo_dir/web/dist"
+if [[ "${DOSBOX_TEST_INSTALLED_GAMES:-0}" == "1" ]]; then
+  for variant in jill1 jill2 jill3 jazz duke1 duke2 gta nfs simcity2000; do
+    timeout 45s node "$repo_dir/scripts/test-installed-runtime.js" \
+      "$repo_dir/web/dist" "$variant" "${DOSBOX_DATA_ROOT:-$repo_dir/../data/dosbox}" 20000
+  done
+fi
 wasm-validate "$repo_dir/web/dist/dosbox.wasm"
 jq -e '.variants | keys == ["duke1", "duke2", "gta", "jazz", "jill1", "jill2", "jill3", "nfs", "simcity2000"]' "$repo_dir/web/dist/wasm-game.json" >/dev/null
 jq -e '.variants | {jill1: (.jill1.files | length), jill2: (.jill2.files | length), jill3: (.jill3.files | length), jazz: (.jazz.files | length), duke1: (.duke1.files | length), duke2: (.duke2.files | length), gta: (.gta.files | length), nfs: (.nfs.files | length), simcity2000: (.simcity2000.files | length)} == {jill1: 28, jill2: 27, jill3: 34, jazz: 66, duke1: 55, duke2: 7, gta: 89, nfs: 360, simcity2000: 30}' "$repo_dir/web/dist/wasm-game-data.json" >/dev/null

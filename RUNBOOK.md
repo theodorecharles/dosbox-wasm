@@ -171,6 +171,12 @@ The automated native-Wasm regression runs an infinite DOS program through the
 production SDL loop, checks the 640x400 surface, queues multiple audio buffers,
 and injects native keyboard/mouse events without a trap. Static and HTTP tests
 cover all nine isolated persistence roots.
+Set `DOSBOX_TEST_INSTALLED_GAMES=1` for the extended local acceptance gate. It
+boots every installed title through the production Wasm module, injects the
+same native key queue used by browser events, requires a changing real
+framebuffer, advancing machine/audio callbacks, and a persistent configuration
+file, and applies a per-title timeout so a black or frozen executable fails the
+test instead of being mistaken for a successful DOSBox launch.
 Native DOSBox smoke tests previously reached every prepared executable; NFS
 reached its car intro and SimCity 2000 reached its intro. None of that replaces
 the explicit Chrome milestone above.
