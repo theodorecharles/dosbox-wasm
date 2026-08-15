@@ -19,7 +19,7 @@ may contain documentation commits after the immutable runtime release:
 
 ```bash
 EMSDK_DIR=/home/ted/emsdk \
-WASM_FRAMEWORK_DIR=/tmp/wasm-game-framework-v0.7.3 \
+WASM_FRAMEWORK_DIR=/tmp/wasm-game-framework-v0.7.5 \
 ./scripts/test-web.sh
 ```
 

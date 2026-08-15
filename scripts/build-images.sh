@@ -3,8 +3,8 @@ set -euo pipefail
 
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 framework_dir="${WASM_FRAMEWORK_DIR:-$repo_dir/../wasm-game-framework}"
-required_version="0.7.3"
-required_commit="be0b813"
+required_version="0.7.5"
+required_commit="11b9af4"
 
 [[ "$(node -p "require('${framework_dir}/package.json').version")" == "$required_version" ]]
 [[ "$(git -C "$framework_dir" rev-parse --short=7 HEAD)" == "$required_commit" ]]
